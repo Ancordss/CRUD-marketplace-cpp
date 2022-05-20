@@ -4,14 +4,14 @@
 #include "ConexionDB.h"
 using namespace std;
 
-class productos
+class Producto
 {
 	//atributos
-private: string producto, idMarca, Descripcion, Imagen, precio_costo, precio_venta, existencia, fecha_ingreso, var;
+private: string producto, idMarca, Descripcion, Imagen, precio_costo, precio_venta, existencia, fecha_ingreso, var_producto;
 	   //constructor
-public: productos() {
+public: Producto() {
 }
-	  productos(string prod, string idM, string Des, string Ima, string pre_c, string pre_v, string exi, string fe_ing, string v)
+	  Producto(string prod, string idM, string Des, string Ima, string pre_c, string pre_v, string exi, string fe_ing, string v)
 	  {
 		  producto = prod;
 		  idMarca = idM;
@@ -21,7 +21,7 @@ public: productos() {
 		  precio_venta = pre_v;
 		  existencia = exi;
 		  fecha_ingreso = fe_ing;
-		  var = v;
+		  var_producto = v;
 	  }
 	  //metodos set 
 	  void setproducto(string prod) { producto = prod; }
@@ -32,7 +32,7 @@ public: productos() {
 	  void setprecio_venta(string pre_v) { precio_venta = pre_v; }
 	  void setexistencia(string exi) { existencia = exi; }
 	  void setfecha_ingreso(string fe_ing) { fecha_ingreso = fe_ing; }
-	  void setVar(string v) { var = v; }
+	  void setvar_producto(string v) { var_producto = v; }
 	  //metodos get
 	  string getproducto() { return producto; }
 	  string getidMarca() { return idMarca; }
@@ -42,7 +42,7 @@ public: productos() {
 	  string getprecio_venta() { return precio_venta; }
 	  string getexistencia() { return existencia; }
 	  string getfecha_ingreso() { return fecha_ingreso; }
-	  string getVar() { return var; }
+	  string getvar_producto() { return var_producto; }
 
 
 	  //metodos
@@ -106,7 +106,7 @@ public: productos() {
 		  if (cn.getConectar()) {
 			  string insert = "UPDATE productos\
 					        SET producto = '" + producto + "', idMarca = '" + idMarca + "', Descripcion = '" + Descripcion + "', Imagen = '" + Imagen + "', precio_costo = '" + precio_costo + "', precio_ventas = '" + precio_venta + "', existencia = '" + existencia + "', fecha_ingreso = '" + fecha_ingreso + "'\
-							WHERE	idProducto ='" + var + "';";
+							WHERE	idProducto ='" + var_producto + "';";
 			  const char* i = insert.c_str();
 			  q_estado = mysql_query(cn.getConectar(), i);
 			  if (!q_estado) {
@@ -132,7 +132,7 @@ public: productos() {
 		  ConexionBD cn = ConexionBD();
 		  cn.abrir_conexion();
 		  if (cn.getConectar()) {
-			  string insert = "DELETE FROM productos WHERE idProducto = '" + var + "';";
+			  string insert = "DELETE FROM productos WHERE idProducto = '" + var_producto + "';";
 			  const char* i = insert.c_str();
 			  q_estado = mysql_query(cn.getConectar(), i);
 			  if (!q_estado) {

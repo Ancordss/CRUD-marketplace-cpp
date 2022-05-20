@@ -4,14 +4,14 @@
 #include "ConexionDB.h"
 using namespace std;
 
-class marcas
+class Marca
 {
 	//atributos
 private: string marca, var;
 	   //constructor
-public: marcas() {
+public: Marca() {
 }
-	  marcas(string mar, string v)
+	  Marca(string mar, string v)
 	  {
 		  marca = mar;
 		  var = v;

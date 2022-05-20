@@ -3,15 +3,15 @@
 #include <string>
 #include "ConexionDB.h"
 
-class Ventas
+class Venta
 {
 private: string nofactura,serie,fechafactura,idcliente,idempleado,fecha_ingreso,var;
 
 public:
-    Ventas() {
+    Venta() {
 
     }
-    Ventas(string noF, string sr, string fechaF, string idcl, string idemp, string fechaI, string v)  {
+    Venta(string noF, string sr, string fechaF, string idcl, string idemp, string fechaI, string v)  {
         nofactura = noF;
         serie = sr;
         fechafactura = fechaF;
