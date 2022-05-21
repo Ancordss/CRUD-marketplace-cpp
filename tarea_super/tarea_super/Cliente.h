@@ -55,7 +55,13 @@ public:
         cn.abrir_conexion();
         if (cn.getConectar()) {
             cout << "------------ Datos de los estudiantes ------------" << endl;
-            string consulta = "select * from clientes";
+            string consulta = "select nombres, apellidos, NIT, telefono,correo_electronico,fechaingreso,\
+                               CASE\
+	                           WHEN genero = 109 THEN 'hombre'\
+	                           WHEN genero = 102 then 'mujer'\
+	                           ELSE 'ERROR'\
+                               END AS genero\
+                               from clientes;";
             const char* c = consulta.c_str();
             q_estado = mysql_query(cn.getConectar(), c);
             if (!q_estado) {
@@ -219,6 +225,27 @@ public:
     }
 };
 
+
+class Genero {
+private: string gen;
+public :
+    Genero(string gen) {
+
+        this->gen = gen;
+    }
+    void confgen() {
+        string resultado;
+        resultado = gen;
+        if (resultado == "f") {
+            resultado = "0";
+            cout << "has seleccionado mujer" << endl;
+        }else if (resultado == "m"){
+            resultado = "1";
+            cout << " has seleccionado hombre" << endl;
+            }
+        gen = resultado;
+    }
+};
 /*******************************************************************************************************************************************/
 class Empleados :
     public Persona
@@ -250,7 +277,7 @@ public:
     void setDir(string dir) { direccion = dir; }
     void setTel(string tel) { telefono = tel; }
     void setDpi(string dpi) { DPI = dpi; }
-    void setGen(string ge) {  genero = ge; }
+    void setGen(string gen) {  genero = gen; }
     void setEmail(string fn) { fecha_nacimiento = fn; }
     void setNit(string idpuesto) { idPuesto = idpuesto; }
     void setFInicio(string fi) { fecha_inicio_l = fi; }
@@ -278,10 +305,15 @@ public:
         cn.abrir_conexion();
         if (cn.getConectar()) {
             cout << "------------ DATOS DE LOS EMPLEADOS ------------" << endl;
-            string consulta = "SELECT empleados.nombres,empleados.apellidos,empleados.direccion,empleados.telefono,empleados.DPI,empleados.genero,empleados.fecha_nacimiento,puestos.puesto,empleados.fecha_inicio_labores,empleados.fechaingreso\
-								FROM empleados\
-								INNER JOIN puestos\
-								ON empleados.idPuesto=puestos.idpuesto;";
+            string consulta = "SELECT empleados.nombres,empleados.apellidos,empleados.direccion,empleados.telefono,empleados.DPI,empleados.fecha_nacimiento,puestos.puesto,empleados.fecha_inicio_labores,empleados.fechaingreso,\
+                               CASE\
+	                           WHEN empleados.genero = 109 THEN 'hombre'\
+                               WHEN empleados.genero = 102 then 'mujero'\
+                               ELSE 'error'\
+                               END AS genero\
+                               FROM empleados\
+                               INNER JOIN puestos\
+                               ON empleados.idPuesto=puestos.idpuesto;";
             const char* c = consulta.c_str();
             q_estado = mysql_query(cn.getConectar(), c);
             if (!q_estado) {

@@ -375,6 +375,8 @@ void crearC() {
     getline(cin, tel);
     cout << "ingrese genero: ";
     getline(cin, gen);
+    Genero d = Genero(gen);
+    d.confgen();
     cout << "ingrese fecha ingreso: ";
     getline(cin, fi);
 
@@ -420,8 +422,11 @@ void actualizarC() {
     getline(cin, tel);
     cout << "ingrese genero: ";
     getline(cin, gen);
+    Genero d = Genero(gen);
+    d.confgen();
     cout << "ingrese fecha ingreso: ";
     getline(cin, fi);
+
 
     Cliente c = Cliente(nom, ape, nt, gen, dir, tel, ce, fi, v);
     c.actualizar();
@@ -454,7 +459,9 @@ void empleados_crear() {
     cout << "ingrese DPI: ";
     getline(cin, dpi);
     cout << "ingrese genero: ";
-    getline(cin, ge);
+    getline(cin, gen);
+    Genero d = Genero(gen);
+    d.confgen();
     cout << "ingrese fecha nacimiento: ";
     getline(cin, fn);
     cout << "ingrese idpuesto: ";
@@ -501,7 +508,9 @@ void empleados_actualizar() {
     cout << "ingrese DPI: ";
     getline(cin, dpi);
     cout << "ingrese genero: ";
-    getline(cin, ge);
+    getline(cin, gen);
+    Genero d = Genero(gen);
+    d.confgen();
     cout << "ingrese fecha nacimiento: ";
     getline(cin, fn);
     cout << "ingrese idpuesto: ";
