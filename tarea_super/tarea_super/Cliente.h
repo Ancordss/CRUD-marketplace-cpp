@@ -232,7 +232,8 @@ public:
     }
   
         Empleados(string nom, string ape, string nt, string gen , string dir, string tel, string ce, string dpi, string ge, string fn, string idpuesto, string fi, string fin, string v) : Persona(nom, ape, nt, gen, dir, tel, ce) {
-
+        
+        fecha_nacimiento = fn;
         fecha_inicio_l = fi;
         fecha_ingreso = fin;
         DPI = dpi;
@@ -277,13 +278,16 @@ public:
         cn.abrir_conexion();
         if (cn.getConectar()) {
             cout << "------------ DATOS DE LOS EMPLEADOS ------------" << endl;
-            string consulta = "select * from empleados";
+            string consulta = "SELECT empleados.nombres,empleados.apellidos,empleados.direccion,empleados.telefono,empleados.DPI,empleados.genero,empleados.fecha_nacimiento,puestos.puesto,empleados.fecha_inicio_labores,empleados.fechaingreso\
+								FROM empleados\
+								INNER JOIN puestos\
+								ON empleados.idPuesto=puestos.idpuesto;";
             const char* c = consulta.c_str();
             q_estado = mysql_query(cn.getConectar(), c);
             if (!q_estado) {
                 resultado = mysql_store_result(cn.getConectar());
                 while (fila = mysql_fetch_row(resultado)) {
-                    cout << fila[0] << "," << fila[1] << "," << fila[2] << "," << fila[3] << "," << fila[4] << "," << fila[5] << "," << fila[6] << "," << fila[7] <<  "," << fila[9] << "," << fila[10] <<endl;
+                    cout << fila[0] << " , " << fila[1] << " , " << fila[2] << " , " << fila[3] << " , " << fila[4] << " , " << fila[5] << " , " << fila[6] << " , " << fila[7] << " , " << fila[8] << " , " << fila[9] << endl;
                 }
 
             }

@@ -77,13 +77,17 @@ public: Producto() {
 		  cn.abrir_conexion();
 		  if (cn.getConectar()) {
 			  cout << "*LISTA DE PRODUCTOS INGRESADOS*" << endl;
-			  string consulta = "SELECT * FROM productos";
+			  //string consulta = "SELECT * FROM productos";
+			  string consulta = "SELECT productos.producto,marcas.marca,productos.Descripcion,productos.Imagen,productos.precio_costo,productos.precio_venta,productos.existencia,productos.fecha_ingreso\
+								FROM productos\
+								INNER JOIN marcas\
+								ON productos.idMarca=marcas.idMarca;";
 			  const char* c = consulta.c_str();
 			  q_estado = mysql_query(cn.getConectar(), c);
 			  if (!q_estado) {
 				  resultado = mysql_store_result(cn.getConectar());
 				  while (fila = mysql_fetch_row(resultado)) {
-					  cout << fila[0] << " , " << fila[1] << " , " << fila[2] << " , " << fila[3] << " , " << fila[4] << " , " << fila[5] << " , " << fila[6] << " , " << fila[7] << " , " << fila[8] << " , " << fila[9] << endl;
+					  cout << fila[0] << " , " << fila[1] << " , " << fila[2] << " , " << fila[3] << " , " << fila[4] << endl;
 				  }
 
 			  }

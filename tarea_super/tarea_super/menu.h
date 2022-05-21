@@ -37,6 +37,10 @@ void empleados_crear();
 void empleados_borrar();
 void empleados_actualizar();
 void empleados_leer();
+void crear_puesto();
+void update_puesto();
+void borra_puesto();
+void leer_puesto();
 
 /*submenu admin  Producto 3*/
 void M_producto();
@@ -278,10 +282,15 @@ void menu_empleados() {
     do
     {
         int switch_on = 0;
-        cout << "para agregar contenido ingresa 1" << endl;
-        cout << "para leer la tabla ingresa 2" << endl;
-        cout << "para actualizar la tabla ingresa 3" << endl;
-        cout << "para borrar de la tabla ingresa 4 " << endl;
+        cout << "para agregar empleado ingresa 1" << endl;
+        cout << "para leer la tabla empleados ingresa 2" << endl;
+        cout << "para actualizar un empleado ingresa 3" << endl;
+        cout << "para borrar de la tabla empleados ingresa 4 " << endl;
+        cout << "-------------------------------------------------------" << endl;
+        cout << "para agregar puesto ingresa 5" << endl;
+        cout << "para leer la tabla puestos ingresa 6" << endl;
+        cout << "para actualizar un puesto ingresa 7" << endl;
+        cout << "para borrar de la tabla puesto ingresa 8 " << endl;
         cout << "para salir presiona 0" << endl;
         cin >> switch_on;
         switch (switch_on)
@@ -293,7 +302,11 @@ void menu_empleados() {
         case 3: system("cls"); empleados_actualizar(); break;
 
         case 4: system("cls"); empleados_borrar(); break;
+        case 5: system("cls"); crear_puesto(); break;
 
+        case 6: system("cls"); leer_puesto(); break;
+        case 7: system("cls"); update_puesto(); break;
+        case 8: system("cls"); borra_puesto(); break;
         case 0: exit(-1);
 
         default: cout << "error ingresa un caracter valido!!!!" << endl;
@@ -511,8 +524,54 @@ void empleados_leer() {
 
 }
 
+void crear_puesto() {
+    system("cls");
+
+    string nom, ape, nt, gen, dir, tel, ce, dpi, ge, fn, idpuesto, fi, fin, v;
+
+    getline(cin, nom);
+    cout << "ingrese puesto: ";
+    getline(cin, nom);
+    Empleados a = Empleados(nom, ape, nt, gen, dir, tel, ce, dpi, ge, fn, idpuesto, fi, fin, v);
+    a.crearpuesto();
+
+}
+
+void leer_puesto() {
+
+    string nom, ape, nt, gen, dir, tel, ce, dpi, ge, fn, idpuesto, fi, fin, v;
+    cout << "--------------TABLA puesto----------------------------" << endl;
+    Empleados a = Empleados(nom, ape, nt, gen, dir, tel, ce, dpi, ge, fn, idpuesto, fi, fin, v);
+    a.leerPuesto();
+}
+
+void borra_puesto() {
+    string nom, ape, nt, gen, dir, tel, ce, dpi, ge, fn, idpuesto, fi, fin, v;
+    getline(cin, nom);
+    cout << "ingrese id del puesto a borrar: ";
+    getline(cin, v);
+
+    Empleados a = Empleados(nom, ape, nt, gen, dir, tel, ce, dpi, ge, fn, idpuesto, fi, fin, v);
+    a.borrarPuesto();
+
+}
+
+void update_puesto() {
+    system("cls");
 
 
+    string nom, ape, nt, gen, dir, tel, ce, dpi, ge, fn, idpuesto, fi, fin, v;
+    getline(cin, v);
+    cout << "ingrese id del puesto a actualizar: ";
+    getline(cin, v);
+    cout << "=================================================" << endl;
+    getline(cin, nom);
+    cout << "ingrese nuevo nombre para el puesto: ";
+    getline(cin, nom);
+    Empleados a = Empleados(nom, ape, nt, gen, dir, tel, ce, dpi, ge, fn, idpuesto, fi, fin, v);
+    a.actualizarpuesto();
+
+}
 /*-------------------------------------------------------Venta--------------------------------------------------*/
 
 void crear_venta() {
