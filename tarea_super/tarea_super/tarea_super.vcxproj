@@ -141,7 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Clientes.cpp" />
+    <ClCompile Include="Cliente.cpp" />
     <ClCompile Include="Compra.cpp" />
     <ClCompile Include="Compra_Detalle.cpp" />
     <ClCompile Include="ConexionDB.cpp" />
@@ -150,10 +150,10 @@
     <ClCompile Include="Marca.cpp" />
     <ClCompile Include="Proveedor.cpp" />
     <ClCompile Include="tarea_super.cpp" />
-    <ClCompile Include="ventas.cpp" />
+    <ClCompile Include="venta.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Clientes.h" />
+    <ClInclude Include="Cliente.h" />
     <ClInclude Include="Compra.h" />
     <ClInclude Include="Compra_Detalle.h" />
     <ClInclude Include="ConexionDB.h" />

@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <mysql.h>
-#include "Clientes.h"
+#include "Cliente.h"
 #include <string>
 #include "Venta.h"
 #include "Producto.h"
@@ -86,7 +86,7 @@ void borrarD_Compra();
 void Maestro_compras();
 
 
-/*submenus empleado crear clientes 1*/
+/*submenus empleado crear Cliente 1*/
 void M_clientes();
 void menu_clientes();
 void crearC();
@@ -162,7 +162,7 @@ void M_empleado() {
         int switch_on = 0;
         cout << "Venta (1)" << endl;
         cout << "gestionar Producto (2)" << endl;
-        cout << "registra clientes (3)" << endl;
+        cout << "registra Cliente (3)" << endl;
         cout << "para salir presiona 0" << endl;
         cin >> switch_on;
         switch (switch_on)
@@ -371,7 +371,7 @@ void crearC() {
     Nit r = Nit(nt);
     r.verificanit();
 
-    Clientes c = Clientes(nom, ape, nt, gen, dir, tel, ce, fi, v);
+    Cliente c = Cliente(nom, ape, nt, gen, dir, tel, ce, fi, v);
     c.crear();
 }
 
@@ -383,7 +383,7 @@ void borrarC() {
     cout << "ingrese id del producto a eliminar: ";
     getline(cin, v);
 
-    Clientes c = Clientes(nom, ape, nt, gen, dir, tel, ce, fi, v);
+    Cliente c = Cliente(nom, ape, nt, gen, dir, tel, ce, fi, v);
     c.borrar();
 }
 
@@ -410,15 +410,15 @@ void actualizarC() {
     cout << "ingrese fecha ingreso: ";
     getline(cin, fi);
 
-    Clientes c = Clientes(nom, ape, nt, gen, dir, tel, ce, fi, v);
+    Cliente c = Cliente(nom, ape, nt, gen, dir, tel, ce, fi, v);
     c.actualizar();
 
 }
 
 void leerC() {
     string nom, ape, nt, gen, dir, tel, ce, fi, v;
-    cout << "--------------TABLA Clientes----------------------------" << endl;
-    Clientes c = Clientes(nom, ape, nt, gen, dir, tel, ce, fi, v);
+    cout << "--------------TABLA Cliente----------------------------" << endl;
+    Cliente c = Cliente(nom, ape, nt, gen, dir, tel, ce, fi, v);
     c.leer();
 }
 /*************************************************************************************************************************/

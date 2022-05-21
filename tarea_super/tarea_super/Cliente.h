@@ -6,16 +6,16 @@
 #include <string>
 #include "ConexionDB.h"
 
-class Clientes :
+class Cliente :
     public Persona
 {
 private: string fecha_ingreso, var;
 
 public:
-    Clientes() {
+    Cliente() {
 
     }
-    Clientes(string nom, string ape, string nt, string gen, string dir, string tel, string ce, string fi,string v) : Persona(nom,ape,nt,gen,dir,tel,ce) {
+    Cliente(string nom, string ape, string nt, string gen, string dir, string tel, string ce, string fi,string v) : Persona(nom,ape,nt,gen,dir,tel,ce) {
         fecha_ingreso = fi;
         var = v;
        
