@@ -52,7 +52,7 @@ public: Producto() {
 		  ConexionBD cn = ConexionBD();
 		  cn.abrir_conexion();
 		  if (cn.getConectar()) {
-			  string insert = "INSERT INTO productos (producto, idMarca, Descripcion, Imagen, precio_costo, precio_venta,existencia,fecha_ingreso) VALUES ('" + producto + "','" + idMarca + "','" + Descripcion + "','" + Imagen + "','" + precio_costo + "','" + precio_venta + "','" + existencia + "','" + fecha_ingreso + "');";
+			  string insert = "INSERT INTO productos (producto, idMarca, Descripcion, Imagen, precio_costo, precio_venta,existencia,fecha_ingreso) VALUES ('" + producto + "','" + idMarca + "','" + Descripcion + "','" + Imagen + "','" + precio_costo + "','" + precio_venta + "','" + existencia + "',NOW());";
 			  const char* i = insert.c_str();
 			  q_estado = mysql_query(cn.getConectar(), i);
 			  if (!q_estado) {
@@ -107,10 +107,10 @@ public: Producto() {
 		  int q_estado;
 		  ConexionBD cn = ConexionBD();
 		  cn.abrir_conexion();
-		  if (cn.getConectar()) {
+		  if (cn.getConectar()) { //reparar producto update no jalines xd
 			  string insert = "UPDATE productos\
-					        SET producto = '" + producto + "', idMarca = '" + idMarca + "', Descripcion = '" + Descripcion + "', Imagen = '" + Imagen + "', precio_costo = '" + precio_costo + "', precio_ventas = '" + precio_venta + "', existencia = '" + existencia + "', fecha_ingreso = '" + fecha_ingreso + "'\
-							WHERE	idProducto ='" + var_producto + "';";
+								SET producto = '" + producto + "', idMarca = '" + idMarca + "', Descripcion = '" + Descripcion + "', Imagen = '" + Imagen + "', precio_costo = '" + precio_costo + "', precio_ventas = '" + precio_venta + "', existencia = '" + existencia + "'\
+								WHERE idProducto ='" + var_producto + "';";
 			  const char* i = insert.c_str();
 			  q_estado = mysql_query(cn.getConectar(), i);
 			  if (!q_estado) {

@@ -1,38 +1,9 @@
-carlos hace la DB ayuda a javier y jonathan
-Maria CRUD Puestos y empleados
-James CRUD Clientes-ventas-ventas_detalle {
-  clase persona
-  hereda a clientes
-  clientes contiene funciones tabla clientes - ventas - ventas detalles ademas de la funcion
-  Buscar por medio del Nit del cliente y mostrar el Nombre completo del cliente.
-  Si en dado caso no existe que lo almacene en la table clientes,
-  adicional debería de crear un algoritmo que valide el formato del
-  NIT sea el correcto, así como validar los casos especiales de
-  consumidor final c/f
+crear maestros detalle!!!! 
+reparar bug en empleados!!! [no funciona update]
+cambiar el nombre de la variable prod = no tiene nada que ver con proveedor :V 
+mejorar el interfaz
 
-  Después de ingresar el NIT que el sistema agrega la fecha
-  automáticamente y que la muestre un correlativo de factura de
-  forma automática (numerofactura y serie).
+conectar con arduino
 
-  Para finalizar y lo más importante el sistemita debe permitir
-  ingresar N cantidad de productos y buscar en el tabla productos los
-  datos del producto (id_producto,producto,marca,Precio_venta) e ir
-  totalizando la venta, al finalizar esta información deberá de ser
-  almacenada en la tabla ventas_detalle a este concepto se le conoce
-  como maestro detalle.
-}
+crear el circuito y usar la funcion en c++ para imprimir lo que esta en la consola 
 
-Javier CRUD Proveedores-compras-compras_detalles
-jonathan CRUD productos-marcas
-
-
-consumidor final = 0 
-barra = boton o automatico
-el menu serie en teoria hacer un menu de por ejemplo
-1 realizar compra
-2 ingresar productos
-
-
-[simulacion de abrir caja completa idk si lo hacemosXD]
-
-James="clientes agregar las demas fornas del nit"

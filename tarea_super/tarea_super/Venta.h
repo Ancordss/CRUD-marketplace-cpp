@@ -83,7 +83,7 @@ public:
         cn.abrir_conexion();
         if (cn.getConectar()) {
             // string insert = "INSERT INTO estudiantes(carnet,nombres,apellidos,direccion,telefono,genero,email,fecha_nacimiento)VALUES('" + carnet + "','" + nombres + "','" + apellido + "','" + direccion + "','" + telefono + "','" + genero + "','" + email + "','" + fecha_nacimiento + "'); ";
-            string insert = "INSERT INTO ventas(nofactura,serie,fechafactura,idcliente,idempleado,fechaingreso)VALUES('" + nofactura + "','" + serie + "','" + fechafactura + "','" + idcliente + "','" + idempleado + "','" + fecha_ingreso + "'); ";
+            string insert = "INSERT INTO ventas(nofactura,serie,fechafactura,idcliente,idempleado,fechaingreso)VALUES('" + nofactura + "','" + serie + "',NOW(),'" + idcliente + "','" + idempleado + "',NOW()); ";
             // string insert = "INSERT INTO productos(producto,idMarca,Descripcion,precio_costo,precio_venta,existencia,fecha_ingreso)VALUES('" + nombres + "','" + idMarca + "','" + descripcion + "','" + precio_costo + "','" + precio_venta + "','" + existencia + "','" + fecha_ingreso + "'); ";
             const char* i = insert.c_str();
             q_estado = mysql_query(cn.getConectar(), i);
@@ -134,7 +134,7 @@ public:
         if (cn.getConectar()) {
             // string t = to_string(telefono); //convierte int a string para mandar a mysql
             string insert = "UPDATE ventas\
-                             SET nofactura='" + nofactura + "',serie='" + serie + "',fechafactura= '" + fechafactura + "', idcliente='" + idcliente + "', idempleado= '" + idempleado + "', fechaingreso= '" + fecha_ingreso + "'\
+                             SET nofactura='" + nofactura + "',serie='" + serie + "',fechafactura= '" + fechafactura + "', idcliente='" + idcliente + "', idempleado= '" + idempleado + "'\
                              WHERE idVentas='" + var + "';";
             const char* i = insert.c_str();
             q_estado = mysql_query(cn.getConectar(), i);

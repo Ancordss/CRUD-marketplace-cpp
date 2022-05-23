@@ -377,9 +377,6 @@ void crearC() {
     getline(cin, gen);
     Genero d = Genero(gen);
     d.confgen();
-    cout << "ingrese fecha ingreso: ";
-    getline(cin, fi);
-
 
 
 
@@ -424,8 +421,7 @@ void actualizarC() {
     getline(cin, gen);
     Genero d = Genero(gen);
     d.confgen();
-    cout << "ingrese fecha ingreso: ";
-    getline(cin, fi);
+ 
 
 
     Cliente c = Cliente(nom, ape, nt, gen, dir, tel, ce, fi, v);
@@ -462,14 +458,8 @@ void empleados_crear() {
     getline(cin, gen);
     Genero d = Genero(gen);
     d.confgen();
-    cout << "ingrese fecha nacimiento: ";
-    getline(cin, fn);
-    cout << "ingrese idpuesto: ";
-    getline(cin, idpuesto);
-    cout << "ingrese fecha inicio: ";
-    getline(cin, fi);
-    cout << "ingrese fecha ingreso: ";
-    getline(cin, fin);
+
+
 
 
 
@@ -515,10 +505,10 @@ void empleados_actualizar() {
     getline(cin, fn);
     cout << "ingrese idpuesto: ";
     getline(cin, idpuesto);
-    cout << "ingrese fecha inicio: ";
+    cout << "ingrese la fecha de inicio de labores nueva: ";
     getline(cin, fi);
-    cout << "ingrese fecha ingreso: ";
-    getline(cin, fin);
+
+  
 
     Empleados a = Empleados(nom, ape, nt, gen, dir, tel, ce, dpi, ge, fn, idpuesto, fi, fin, v);
     a.actualizar();
@@ -598,8 +588,6 @@ void crear_venta() {
     getline(cin, idcl);
     cout << "id del empleado : ";
     getline(cin, idemp);
-    cout << "fecha ingreso: ";
-    getline(cin, fechaI);
 
 
     Venta u = Venta(noF, sr, fechaF, idcl, idemp, fechaI, v);
@@ -630,8 +618,7 @@ void actualizar_venta() {
     getline(cin, idcl);
     cout << "id del empleado : ";
     getline(cin, idemp);
-    cout << "fecha ingreso: ";
-    getline(cin, fechaI);
+
 
     Venta u = Venta(noF, sr, fechaF, idcl, idemp, fechaI, v);
     u.actualizar();
@@ -706,8 +693,6 @@ void crearpro() {
     getline(cin, pre_v);
     cout << "Ingrese la existencia del producto: " << endl;
     getline(cin, exi);
-    cout << "Ingrese la fecha que ingreso el producto: " << endl;
-    getline(cin, fe_ing);
 
 
     Producto p = Producto(prod, idM, Des, Ima, pre_c, pre_v, exi, fe_ing, v);
@@ -732,8 +717,6 @@ void actualizarpro() {
     getline(cin, v);
     cout << "Ingrese el Id del producto a actualizar: " << endl;
     getline(cin, v);
-    cout << " **" << endl;
-    getline(cin, v);
     cout << "Ingrese el producto: " << endl;
     getline(cin, prod);
     cout << "Ingrese el Id de la marca del producto : " << endl;
@@ -748,9 +731,7 @@ void actualizarpro() {
     getline(cin, pre_v);
     cout << "Ingrese la existencia del producto: " << endl;
     getline(cin, exi);
-    cout << "Ingrese la fecha que ingreso el producto: " << endl;
-    getline(cin, fe_ing);
-
+ 
     Producto p = Producto(prod, idM, Des, Ima, pre_c, pre_v, exi, fe_ing, v);
     p.actualizar();
     p.leer();

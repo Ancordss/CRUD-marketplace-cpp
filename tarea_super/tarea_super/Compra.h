@@ -40,7 +40,7 @@ public: Compra() {}
 		  ConexionBD cn = ConexionBD();
 		  cn.abrir_conexion();
 		  if (cn.getConectar()) {
-			  string insert = "INSERT INTO compras (no_orden_compra, idproveedor, fecha_orden, fechaingreso) VALUES ('" + no_orden_compra + "', '" + idproveedor + "', '" + fecha_orden + "', '" + fechaingreso + "')";
+			  string insert = "INSERT INTO compras (no_orden_compra, idproveedor, fecha_orden, fechaingreso) VALUES ('" + no_orden_compra + "', '" + idproveedor + "',NOW(),NOW())";
 			  const char* i = insert.c_str();
 			  q_estado = mysql_query(cn.getConectar(), i);
 			  if (!q_estado) {
@@ -94,7 +94,7 @@ public: Compra() {}
 		  cn.abrir_conexion();
 		  if (cn.getConectar()) {
 			  string insert = "UPDATE compras\
-					        SET no_orden_compra = '" + no_orden_compra + "', idproveedor = '" + idproveedor + "', fecha_orden = '" + fecha_orden + "', fechaingreso = '" + fechaingreso + "'\
+					        SET no_orden_compra = '" + no_orden_compra + "', idproveedor = '" + idproveedor + "',fechaingreso = '" + fechaingreso + "'\
 							WHERE idCompra ='" + varcom + "';";
 			  const char* i = insert.c_str();
 			  q_estado = mysql_query(cn.getConectar(), i);

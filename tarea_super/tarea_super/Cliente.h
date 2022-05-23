@@ -89,7 +89,7 @@ public:
         cn.abrir_conexion();
         if (cn.getConectar()) {
             // string insert = "INSERT INTO estudiantes(carnet,nombres,apellidos,direccion,telefono,genero,email,fecha_nacimiento)VALUES('" + carnet + "','" + nombres + "','" + apellido + "','" + direccion + "','" + telefono + "','" + genero + "','" + email + "','" + fecha_nacimiento + "'); ";
-            string insert = "INSERT INTO clientes(nombres,apellidos,NIT,genero,telefono,correo_electronico,fechaingreso)VALUES('" + nombres + "','" + apellidos + "','" + nit + "','" + genero + "','" + telefono + "','" + correo_electronico + "','" + fecha_ingreso + "'); ";
+            string insert = "INSERT INTO clientes(nombres,apellidos,NIT,genero,telefono,correo_electronico,fechaingreso)VALUES('" + nombres + "','" + apellidos + "','" + nit + "','" + genero + "','" + telefono + "','" + correo_electronico + "',NOW()); ";
             // string insert = "INSERT INTO productos(producto,idMarca,Descripcion,precio_costo,precio_venta,existencia,fecha_ingreso)VALUES('" + nombres + "','" + idMarca + "','" + descripcion + "','" + precio_costo + "','" + precio_venta + "','" + existencia + "','" + fecha_ingreso + "'); ";
             const char* i = insert.c_str();
             q_estado = mysql_query(cn.getConectar(), i);
@@ -341,7 +341,7 @@ public:
         ConexionBD cn = ConexionBD();
         cn.abrir_conexion();
         if (cn.getConectar()) {    //error en insert fecha_nacimiento arreglar.
-           string insert = "INSERT INTO empleados(nombres,apellidos,direccion,telefono,DPI,genero,fecha_nacimiento,idPuesto,fecha_inicio_labores,fechaingreso)VALUES('" + nombres + "','" + apellidos + "','" + direccion + "','" + telefono + "','" +  DPI + "','" + genero + "','" + fecha_nacimiento + "','" + idPuesto + "','" + fecha_inicio_l + "','" + fecha_ingreso+ "'); ";
+           string insert = "INSERT INTO empleados(nombres,apellidos,direccion,telefono,DPI,genero,fecha_nacimiento,idPuesto,fecha_inicio_labores,fechaingreso)VALUES('" + nombres + "','" + apellidos + "','" + direccion + "','" + telefono + "','" +  DPI + "','" + genero + "','" + fecha_nacimiento + "','" + idPuesto + "',NOW(),NOW()); ";
            const char* i = insert.c_str();
            q_estado = mysql_query(cn.getConectar(), i);
             if (!q_estado) {
@@ -389,8 +389,9 @@ public:
         ConexionBD cn = ConexionBD();
         cn.abrir_conexion();
         if (cn.getConectar()) {
-        string insert = "UPDATE empleados\
-                             SET nombres='" + nombres + "',apellidos='"+ apellidos + "',direccion='" + direccion + "',telefono='" + telefono + "',DPI='" +  DPI + "',genero='" + genero + "',fecha_nacimiento='" + fecha_nacimiento + "',idPuesto='" + idPuesto + "',fecha_inicio_labores='" + fecha_inicio_l + "',fecha_ingreso='" + fecha_ingreso+ "'\
+            string time = "NOW()";
+            string insert = "UPDATE empleados\
+                             SET nombres='" + nombres + "',apellidos='"+ apellidos + "',direccion='" + direccion + "',telefono='" + telefono + "',DPI='" +  DPI + "',genero='" + genero + "',fecha_nacimiento='" + fecha_nacimiento + "',idPuesto='" + idPuesto + "',fecha_inicio_labores='" + fecha_inicio_l + "'\
                              WHERE idempleado='" + var + "';";
             const char* i = insert.c_str();
             q_estado = mysql_query(cn.getConectar(), i);
@@ -449,7 +450,7 @@ public:
            int q_estado;
            ConexionBD cn = ConexionBD();
            cn.abrir_conexion();
-           if (cn.getConectar()) {    //error en insert fecha_nacimiento arreglar.
+           if (cn.getConectar()) {    
                string insert = "INSERT INTO puestos(puesto)VALUES('" + nombres + "'); ";
                const char* i = insert.c_str();
                q_estado = mysql_query(cn.getConectar(), i);
