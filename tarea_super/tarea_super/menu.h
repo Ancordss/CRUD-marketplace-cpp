@@ -3,7 +3,7 @@
 #include <mysql.h>
 #include "Cliente.h"
 #include <string>
-#include "Venta.h"
+#include "M_ventas.h"
 #include "Producto.h"
 #include "Marca.cpp"
 #include "Proveedor.h"
@@ -15,12 +15,8 @@ using namespace std;
 
 
 
-void menu_Venta();
 
-void crear_venta();
-void leer_venta();
-void actualizar_venta();
-void borrar_venta();
+
 
 
 
@@ -171,6 +167,7 @@ void M_empleado() {
         cin >> switch_on;
         switch (switch_on)
         {
+        case 1: system("cls"); menu_Venta(); break;
         case 2: system("cls"); subM_Producto(); break;
         case 3: system("cls"); menu_clientes(); break;
 
@@ -323,39 +320,6 @@ void menu_empleados() {
 
 
 
-
-void menu_Venta() {
-    do
-    {
-        int switch_on = 0;
-        cout << "para agregar contenido ingresa 1" << endl;
-        cout << "para leer la tabla ingresa 2" << endl;
-        cout << "para actualizar la tabla ingresa 3" << endl;
-        cout << "para borrar de la tabla ingresa 4 " << endl;
-        cout << "para salir presiona 0" << endl;
-        cin >> switch_on;
-        switch (switch_on)
-        {
-        case 1: system("cls"); crear_venta(); break;
-
-        case 2: system("cls"); leer_venta(); break;
-
-        case 3: system("cls"); actualizar_venta(); break;
-
-        case 4: system("cls"); borrar_venta(); break;
-
-        case 0: exit(-1);
-
-        default: cout << "error ingresa un caracter valido!!!!" << endl;
-            break;
-        }
-
-
-    } while (1 == 1);
-
-
-
-}
 
 
 void crearC() {
@@ -572,72 +536,6 @@ void update_puesto() {
 
 }
 /*-------------------------------------------------------Venta--------------------------------------------------*/
-
-void crear_venta() {
-
-    system("cls");
-    string noF, sr, fechaF, idcl, idemp, fechaI, v;
-    getline(cin, noF);
-    cout << "no de factura: ";
-    getline(cin, noF);
-    cout << "ingrese serie de las facturas: ";
-    getline(cin, sr);
-    cout << "fecha de la factura: ";
-    getline(cin, fechaF);
-    cout << "id del cliente ";
-    getline(cin, idcl);
-    cout << "id del empleado : ";
-    getline(cin, idemp);
-
-
-    Venta u = Venta(noF, sr, fechaF, idcl, idemp, fechaI, v);
-    u.crear();
-
-
-}
-
-void leer_venta() {
-    string noF, sr, fechaF, idcl, idemp, fechaI, v;
-    cout << "--------------TABLA Venta----------------------------" << endl;
-    Venta u = Venta(noF, sr, fechaF, idcl, idemp, fechaI, v);
-    u.leer();
-
-}
-
-void actualizar_venta() {
-    system("cls");
-    string noF, sr, fechaF, idcl, idemp, fechaI, v;
-    getline(cin, noF);
-    cout << "no de factura: ";
-    getline(cin, noF);
-    cout << "ingrese serie de las facturas: ";
-    getline(cin, sr);
-    cout << "fecha de la factura: ";
-    getline(cin, fechaF);
-    cout << "id del cliente ";
-    getline(cin, idcl);
-    cout << "id del empleado : ";
-    getline(cin, idemp);
-
-
-    Venta u = Venta(noF, sr, fechaF, idcl, idemp, fechaI, v);
-    u.actualizar();
-
-}
-
-
-void borrar_venta() {
-    string noF, sr, fechaF, idcl, idemp, fechaI, v;
-    getline(cin, v);
-    cout << "ingrese id de la venta a eliminar: ";
-    getline(cin, v);
-
-    Venta u = Venta(noF, sr, fechaF, idcl, idemp, fechaI, v);
-    u.borrar();
-
-
-
-}
 
 
 

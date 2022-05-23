@@ -158,10 +158,15 @@
     <ClInclude Include="Compra_Detalle.h" />
     <ClInclude Include="ConexionDB.h" />
     <ClInclude Include="menu.h" />
+    <ClInclude Include="M_ventas.h" />
     <ClInclude Include="Persona.h" />
     <ClInclude Include="Producto.h" />
     <ClInclude Include="Proveedor.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Venta.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="tarea_super.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

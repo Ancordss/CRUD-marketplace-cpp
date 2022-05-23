@@ -83,7 +83,7 @@ public:
         cn.abrir_conexion();
         if (cn.getConectar()) {
             // string insert = "INSERT INTO estudiantes(carnet,nombres,apellidos,direccion,telefono,genero,email,fecha_nacimiento)VALUES('" + carnet + "','" + nombres + "','" + apellido + "','" + direccion + "','" + telefono + "','" + genero + "','" + email + "','" + fecha_nacimiento + "'); ";
-            string insert = "INSERT INTO ventas(nofactura,serie,fechafactura,idcliente,idempleado,fechaingreso)VALUES('" + nofactura + "','" + serie + "',NOW(),'" + idcliente + "','" + idempleado + "',NOW()); ";
+            string insert = "INSERT INTO ventas(nofactura,serie,fechafactura,idcliente,idempleado,fechaingreso)VALUES('" + nofactura + "','" + serie + "','" + fechafactura + "', '" + idcliente + "', '" + idempleado + "','" + fecha_ingreso + "'); ";
             // string insert = "INSERT INTO productos(producto,idMarca,Descripcion,precio_costo,precio_venta,existencia,fecha_ingreso)VALUES('" + nombres + "','" + idMarca + "','" + descripcion + "','" + precio_costo + "','" + precio_venta + "','" + existencia + "','" + fecha_ingreso + "'); ";
             const char* i = insert.c_str();
             q_estado = mysql_query(cn.getConectar(), i);
@@ -157,9 +157,179 @@ public:
 
     }
 
+
+    void leeru() {
+        int q_estado;
+        ConexionBD cn = ConexionBD();
+        MYSQL_ROW fila;
+        MYSQL_RES* resultado;
+        cn.abrir_conexion();
+        if (cn.getConectar()) {
+            cout << "------------ Datos de los estudiantes ------------" << endl;
+            string consulta = "select idVentas from ventas";
+            const char* c = consulta.c_str();
+            q_estado = mysql_query(cn.getConectar(), c);
+            if (!q_estado) {
+                resultado = mysql_store_result(cn.getConectar());
+                while (fila = mysql_fetch_row(resultado)) {
+                    cout << fila[0] << "," << fila[1] << "," << fila[2] << "," << fila[3] << "," << fila[4] << "," << fila[5] << "," << fila[6] << "," << fila[7] << endl;
+                }
+
+            }
+            else {
+                cout << " xxx Error al Consultar  xxx" << endl;
+            }
+
+        }
+        else {
+            cout << "Error al leer" << endl;
+            system("pause");
+        }
+        cn.cerrar_conexion();
+    }
+
 };
 
+class venta_detalle
+{
+private: string cantidad, precio_unitario, idVenta, idProducto, var;
 
+public: venta_detalle() {
+
+}
+      venta_detalle(string cant, string pre_uni, string idV, string idP,string v) {
+          cantidad = cant;
+          precio_unitario = pre_uni;
+          idVenta = idV;
+          idProducto = idP;
+          var = v;
+      }
+
+      void setCant(string cant) { cantidad = cant; }
+      void setPre_uni(string pre_uni) { precio_unitario = pre_uni; }
+      void setidV(string idV) { idVenta = idV; }
+      void setidP(string idP) { idProducto = idP; }
+      void setVar(string v) { var = v; }
+
+
+      string getCant() { return cantidad; }
+      string getPre_uni() { return precio_unitario; }
+      string getidV() { return idVenta; }
+      string getidP(){ return idProducto; }
+      string getVar() { return var; }
+
+
+      void leer() {
+          int q_estado;
+          ConexionBD cn = ConexionBD();
+          MYSQL_ROW fila;
+          MYSQL_RES* resultado;
+          cn.abrir_conexion();
+          if (cn.getConectar()) {
+              cout << "------------ Datos de los estudiantes ------------" << endl;
+              string consulta = "select * from ventas_detalle";
+              const char* c = consulta.c_str();
+              q_estado = mysql_query(cn.getConectar(), c);
+              if (!q_estado) {
+                  resultado = mysql_store_result(cn.getConectar());
+                  while (fila = mysql_fetch_row(resultado)) {
+                      cout << fila[0] << "," << fila[1] << "," << fila[2] << "," << fila[3] << "," << fila[4] << "," << fila[5] << "," << fila[6] << "," << fila[7] << endl;
+                  }
+
+              }
+              else {
+                  cout << " xxx Error al Consultar  xxx" << endl;
+              }
+
+          }
+          else {
+              cout << "Error al leer" << endl;
+              system("pause");
+          }
+          cn.cerrar_conexion();
+      }
+
+      void crear() {
+          int q_estado;
+          ConexionBD cn = ConexionBD();
+          cn.abrir_conexion();
+          if (cn.getConectar()) {
+              // string insert = "INSERT INTO estudiantes(carnet,nombres,apellidos,direccion,telefono,genero,email,fecha_nacimiento)VALUES('" + carnet + "','" + nombres + "','" + apellido + "','" + direccion + "','" + telefono + "','" + genero + "','" + email + "','" + fecha_nacimiento + "'); ";
+              string insert = "INSERT INTO ventas_detalle(idVentas,idProducto,cantidad,Precio_Unitario)VALUES('" + idVenta + "','" + idProducto + "','" + cantidad + "','" + precio_unitario + "'); ";
+              // string insert = "INSERT INTO productos(producto,idMarca,Descripcion,precio_costo,precio_venta,existencia,fecha_ingreso)VALUES('" + nombres + "','" + idMarca + "','" + descripcion + "','" + precio_costo + "','" + precio_venta + "','" + existencia + "','" + fecha_ingreso + "'); ";
+              const char* i = insert.c_str();
+              q_estado = mysql_query(cn.getConectar(), i);
+              if (!q_estado) {
+                  cout << "ingreso exitoso" << endl;
+              }
+              else {
+                  cout << "error al insertar" << endl;
+              }
+
+          }
+          else {
+              cout << "Error al leer" << endl;
+              system("pause");
+          }
+          cn.cerrar_conexion();
+      }
+
+      void actualizar() {
+          int q_estado;
+          ConexionBD cn = ConexionBD();
+          cn.abrir_conexion();
+          if (cn.getConectar()) {
+              // string t = to_string(telefono); //convierte int a string para mandar a mysql
+              string insert = "UPDATE ventas_detalle\
+                             SET idVentas='" + idVenta + "',idProducto='" + idProducto + "',cantidad= '" + cantidad + "', precio_unitario='" + precio_unitario + "'\
+                             WHERE idVentas_detalle='" + var + "';";
+              const char* i = insert.c_str();
+              q_estado = mysql_query(cn.getConectar(), i);
+              if (!q_estado) {
+                  cout << "ingreso exitoso" << endl;
+                  system("pause");
+              }
+              else {
+                  cout << "error al insertar" << endl;
+                  system("pause");
+              }
+
+          }
+          else {
+              cout << "Error al leer" << endl;
+              system("pause");
+          }
+          cn.cerrar_conexion();
+          system("pause");
+
+      }
+
+      void borrar() {
+          int q_estado;
+          ConexionBD cn = ConexionBD();
+          cn.abrir_conexion();
+          if (cn.getConectar()) {
+              // string t = to_string(telefono); //convierte int a string para mandar a mysql
+              string insert = "DELETE FROM ventas_detalle WHERE idVentas_detalle='" + var + "';";
+              // string insert = "INSERT INTO productos(producto,idMarca,Descripcion,precio_costo,precio_venta,existencia,fecha_ingreso)VALUES('" + nombres + "','" + idMarca + "','" + descripcion + "','" + precio_costo + "','" + precio_venta + "','" + existencia + "','" + fecha_ingreso + "'); ";
+              const char* i = insert.c_str();
+              q_estado = mysql_query(cn.getConectar(), i);
+              if (!q_estado) {
+                  cout << "ingreso exitoso" << endl;
+              }
+              else {
+                  cout << "error al insertar" << endl;
+              }
+
+          }
+          else {
+              cout << "Error al leer" << endl;
+              system("pause");
+          }
+          cn.cerrar_conexion();
+      }
+
+};
 
 
 

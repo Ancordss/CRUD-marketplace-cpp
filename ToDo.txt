@@ -1,4 +1,4 @@
-crear maestros detalle!!!! 
+crear maestros detalle!!!!  [no deja insertar en tabla ventas y ventas detalle]
 reparar bug en empleados!!! [no funciona update]
 cambiar el nombre de la variable prod = no tiene nada que ver con proveedor :V 
 mejorar el interfaz
