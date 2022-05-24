@@ -1,8 +1,11 @@
 #pragma once
 #include <string>
 #include "Venta.h"
+#include "time.h"
 #include <iostream>
 using namespace std;
+
+void reloj();
 
 void menu_Venta();
 void crearfactura();
@@ -16,7 +19,7 @@ void menu_Venta() {
     do
     {
         int switch_on = 0;
-        cout << "para agregar contenido ingresa 1" << endl;
+        cout << "para realizar compra ingresa 1" << endl;
         cout << "para leer la tabla ingresa 2" << endl;
         cout << "para actualizar la tabla ingresa 3" << endl;
         cout << "para borrar de la tabla ingresa 4 " << endl;
@@ -24,7 +27,7 @@ void menu_Venta() {
         cin >> switch_on;
         switch (switch_on)
         {
-        case 1: system("cls"); crear_venta(); break;
+        case 1: system("cls"); crearfactura(); break;
 
         case 2: system("cls"); leer_venta(); break;
 
@@ -32,7 +35,6 @@ void menu_Venta() {
 
         case 4: system("cls"); borrar_venta(); break;
 
-        case 5: system("cls"); crearfactura(); break;
 
         case 0: exit(-1);
 
@@ -115,7 +117,9 @@ void borrar_venta() {
 }
 
 void crearfactura() {
-    
+    system("cls");
+    /*time_t t = time(NULL);
+    tm* tPtr = localtime(&t);*/
     char cont = 's';
     int nofactura;
     int serie = 1;
@@ -128,17 +132,15 @@ void crearfactura() {
 
     string sr = to_string(serie);
     cout << "serie:" <<sr << endl; //automatico
-    
 
-    cout << "fecha de la factura: YYYY:MM:DD " << endl; //automatico 
+    //cout << " fecha de ingreso "<< (tPtr->tm_hour)<<":"<< (tPtr->tm_min)<<" : "<< (tPtr->tm_sec) <<""<< endl;
+
 
     getline(cin, idcl);
     cout << "id del cliente: " << endl;
     getline(cin, idcl);
     cout << "id del empleado: " << endl;
     getline(cin, idemp);
-    cout << " fecha de ingreso " << endl; 
-    v = noF;
 
     Venta u = Venta(noF, sr, fechaF, idcl, idemp, fechaI, v);
     u.crear();
@@ -160,6 +162,7 @@ void crearfactura() {
         cin >> cont;
         cin.ignore();
     } while (cont == 's');
+    nofactura = nofactura + 1;
 
     venta_detalle a = venta_detalle(cant, pre_uni, idV, idP, v);
     a.leer();

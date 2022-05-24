@@ -157,6 +157,7 @@
     <ClInclude Include="Compra.h" />
     <ClInclude Include="Compra_Detalle.h" />
     <ClInclude Include="ConexionDB.h" />
+    <ClInclude Include="time.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="M_ventas.h" />
     <ClInclude Include="Persona.h" />
