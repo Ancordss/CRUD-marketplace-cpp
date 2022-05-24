@@ -83,8 +83,8 @@ public:
         cn.abrir_conexion();
         if (cn.getConectar()) {
             // string insert = "INSERT INTO estudiantes(carnet,nombres,apellidos,direccion,telefono,genero,email,fecha_nacimiento)VALUES('" + carnet + "','" + nombres + "','" + apellido + "','" + direccion + "','" + telefono + "','" + genero + "','" + email + "','" + fecha_nacimiento + "'); ";
-            string insert = "INSERT INTO ventas(nofactura,serie,fechafactura,idcliente,idempleado,fechaingreso)VALUES('" + nofactura + "','" + serie + "','" + fechafactura + "', '" + idcliente + "', '" + idempleado + "','" + fecha_ingreso + "'); ";
-            // string insert = "INSERT INTO productos(producto,idMarca,Descripcion,precio_costo,precio_venta,existencia,fecha_ingreso)VALUES('" + nombres + "','" + idMarca + "','" + descripcion + "','" + precio_costo + "','" + precio_venta + "','" + existencia + "','" + fecha_ingreso + "'); ";
+            //string insert = "INSERT INTO ventas(nofactura,serie,fechafactura,idcliente,idempleado,fechaingreso)VALUES('" + nofactura + "','" + serie + "','" + fechafactura + "', '" + idcliente + "', '" + idempleado + "','" + fecha_ingreso + "'); ";
+            string insert = "INSERT INTO ventas(nofactura,serie,fechafactura,idcliente,idempleado,fechaingreso)VALUES('" + nofactura + "','" + serie + "',NOW(), '" + idcliente + "', '" + idempleado + "',NOW()); ";
             const char* i = insert.c_str();
             q_estado = mysql_query(cn.getConectar(), i);
             if (!q_estado) {
@@ -165,14 +165,19 @@ public:
         MYSQL_RES* resultado;
         cn.abrir_conexion();
         if (cn.getConectar()) {
-            cout << "------------ Datos de los estudiantes ------------" << endl;
-            string consulta = "select idVentas from ventas";
+            cout << "------------ id de la venta ------------" << endl;
+            string consulta = "select idVentas,\
+                                CASE\
+                                WHEN nofactura = '" + var + "' then '" + var + "'\
+                                ELSE 'error'\
+                                end as ID\
+                                From ventas;";
             const char* c = consulta.c_str();
             q_estado = mysql_query(cn.getConectar(), c);
             if (!q_estado) {
                 resultado = mysql_store_result(cn.getConectar());
                 while (fila = mysql_fetch_row(resultado)) {
-                    cout << fila[0] << "," << fila[1] << "," << fila[2] << "," << fila[3] << "," << fila[4] << "," << fila[5] << "," << fila[6] << "," << fila[7] << endl;
+                    cout << fila[0] << endl;
                 }
 
             }

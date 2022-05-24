@@ -117,41 +117,52 @@ void borrar_venta() {
 void crearfactura() {
     
     char cont = 's';
-    string noF, sr, fechaF, idcl, idemp, fechaI;
+    int nofactura;
+    int serie = 1;
+    string fechaF, idcl, idemp, fechaI;
     string cant, pre_uni, idV, idP, v;
-    cout << "nofactura: " << endl; // automatico 
-    cout << "serie: 21-00001" << endl; //automatico
+
+    nofactura = +1;
+    string noF = to_string(nofactura);
+    cout << "nofactura: "  << noF << endl; // automatico
+
+    string sr = to_string(serie);
+    cout << "serie:" <<sr << endl; //automatico
     
-    cout << "fecha de la factura: " << endl; //automatico 
+
+    cout << "fecha de la factura: YYYY:MM:DD " << endl; //automatico 
+
     getline(cin, idcl);
     cout << "id del cliente: " << endl;
     getline(cin, idcl);
     cout << "id del empleado: " << endl;
     getline(cin, idemp);
-    cout << " fecha de ingreso " << endl; //automatico 
+    cout << " fecha de ingreso " << endl; 
+    v = noF;
 
     Venta u = Venta(noF, sr, fechaF, idcl, idemp, fechaI, v);
     u.crear();
     u.leeru();
 
-    getline(cin, idV);
     cout << "id de la venta: ";
     getline(cin, idV);
     do {
-        getline(cin, idP);
         cout << "id del producto: " << endl;
         getline(cin, idP);
         cout << "cantidad: " << endl;
         getline(cin, cant);
         cout << "precio_unitario" << endl;
         getline(cin, pre_uni);
+
+        venta_detalle a = venta_detalle(cant, pre_uni, idV, idP, v);
+        a.crear();
         cout << "agregar mas ? s/n";
         cin >> cont;
         cin.ignore();
     } while (cont == 's');
 
     venta_detalle a = venta_detalle(cant, pre_uni, idV, idP, v);
-    a.crear();
+    a.leer();
 
 
 }
