@@ -1,5 +1,7 @@
 #pragma once
 #include <iostream>
+#include <stdlib.h>
+#include <time.h>
 #include <mysql.h>
 #include "Cliente.h"
 #include <string>
@@ -7,17 +9,9 @@
 #include "Producto.h"
 #include "Marca.cpp"
 #include "Proveedor.h"
-#include "Compra.h"
-#include "Compra_Detalle.h"
+#include "M_compras.h"
 #include "Producto.h"
 using namespace std;
-
-
-
-
-
-
-
 
 
 /*menu principal*/
@@ -60,31 +54,11 @@ void crearProd();
 void leerProd();
 void actualizarProd();
 void borrarProd();
-
-/*---------incluye proveedor-------*/
-void M_compra();
-void crearCompra();
-void leerCompra();
-void actualizarCompra();
-void borrarCompra();
-
-/*---------incluye marca-------*/
-void M_compra();
-void crearCompra();
-void leerCompra();
-void actualizarCompra();
-void borrarCompra();
-
-/*---------incluye marca Detalle-------*/
-void M_D_compra();
-void crearD_compra();
-void leerD_compra();
-void actualizarD_Compra();
-void borrarD_Compra();
+ 
 
 /*---------MAESTROS-----------------------*/
-void Maestro_compras();
 
+void M_compras();
 
 /*submenus empleado crear Cliente 1*/
 void M_clientes();
@@ -130,7 +104,7 @@ void Madmin() {
         cout << "administrar empleados (1)" << endl;
         cout << "administrar Producto (2)"<< endl;
         cout << "administra proveedores (3)" << endl;
-        cout << "comprar a proveedores (4)" << endl;
+        cout << " Realizar comprar a proveedores (4)" << endl;
         cout << "mostrar opciones de empleados (5)" << endl;
         cout << "para salir presiona 0" << endl;
         cin >> switch_on;
@@ -139,9 +113,7 @@ void Madmin() {
         case 1: system("cls"); menu_empleados(); break;
         case 2: system("cls"); M_producto(); break;
 		case 3: system("cls"); M_proveedor(); break;
-        case 4: system("cls"); Maestro_compras(); break;
-			// compra detalle estra en el menu de compra
-			//se tiene que crear un registro maestro de compra a proveedores y un detalle de compra a proveedores
+        case 4: system("cls");  M_compras(); break;
         case 5: system("cls"); M_empleado(); break;
 
 
@@ -846,294 +818,4 @@ void borrarProd() {
     system("pause");
 	system ("cls");
 
-}
-
-/*-------------------------------------------------------COMPRA--------------------------------------------------*/
-
-void M_compra() {
-    do
-    {
-        int switch_on = 0;
-        cout << "para agregar una nueva compra ingrese 1: " << endl;
-        cout << "para leer la tabla ingresa 2: " << endl;
-        cout << "para actualizar la tabla ingresa 3" << endl;
-        cout << "para borrar de la tabla ingresa 4 " << endl;
-		cout << "Ingresar a Compra detalle " << endl;
-        cout << "para salir presiona 0" << endl;
-        cin >> switch_on;
-        switch (switch_on)
-        {
-        case 1: crearCompra(); break;
-
-        case 2: leerCompra(); break;
-
-        case 3: actualizarCompra(); break;
-
-        case 4: borrarCompra(); break;
-			
-        case 5: M_D_compra(); break;
-
-
-        case 0: exit(-1);
-
-        default: cout << "error ingresa un caracter valido!!!!" << endl;
-            break;
-        }
-
-
-    } while (1 == 1);
-
-}
-
-void crearCompra() {
-    system("cls");
-    string no_orden_compra, idproveedor, fecha_orden, fechaingreso, varcom;
-    getline(cin, no_orden_compra);
-    cout << "ingrese el numero de orden de compra: " << endl;
-    getline(cin, no_orden_compra);
-    cout << "ingrese el id del proveedor: " << endl;
-    getline(cin, idproveedor);
-    cout << "ingrese la fecha de la orden de compra: " << endl;
-    getline(cin, fecha_orden);
-    cout << "ingrese la fecha de ingreso de la orden de compra: " << endl;
-    getline(cin, fechaingreso);
-
-    Compra c = Compra(no_orden_compra, idproveedor, fecha_orden, fechaingreso, varcom);
-    c.crear();
-    c.leer();
-    system("pause");
-    system("cls");
-}
-
-void leerCompra()
-{
-    system("cls");
-    string no_oreden_compra, idproveedor, fecha_orden, fechaingreso, varcom;
-    cout << "------------TABLA COMPRAS-----------" << endl;
-    cout << "------------------------------------" << endl;
-    Compra c = Compra(no_oreden_compra, idproveedor, fecha_orden, fechaingreso, varcom);
-    c.leer();
-    system("pause");
-    system("cls");
-}
-
-void actualizarCompra()
-{
-    system("cls");
-    string no_orden_compra, idproveedor, fecha_orden, fechaingreso, varcom;
-    getline(cin, varcom);
-    cout << "ingrese el id de la compra que desea actualizar: " << endl;
-    getline(cin, varcom);
-    cout << " ********" << endl;
-    getline(cin, no_orden_compra);
-    cout << "ingrese el numero de orden de compra: " << endl;
-    getline(cin, no_orden_compra);
-    cout << "ingrese el id del proveedor: " << endl;
-    getline(cin, idproveedor);
-    cout << "ingrese la fecha de la orden de compra: " << endl;
-    getline(cin, fecha_orden);
-    cout << "ingrese la fecha de ingreso de la orden de compra: " << endl;
-    getline(cin, fechaingreso);
-
-    Compra c = Compra(no_orden_compra, idproveedor, fecha_orden, fechaingreso, varcom);
-    c.actualizar();
-    c.leer();
-    system("pause");
-    system("cls");
-}
-
-void borrarCompra()
-{
-    system("cls");
-    string no_orden_compra, idproveedor, fecha_orden, fechaingreso, varcom;
-    getline(cin, varcom);
-    cout << "ingrese el id de la compra que desea borrar: " << endl;
-    getline(cin, varcom);
-    Compra c = Compra(no_orden_compra, idproveedor, fecha_orden, fechaingreso, varcom);
-    c.borrar();
-    c.leer();
-    system("pause");
-    system("cls");
-}
-
-/*-------------------------------------------------------COMPRA DETALLE--------------------------------------------------*/
-
-void M_D_compra() {
-    do
-    {
-        int switch_on = 0;
-        cout << "para agregar una nuevo detalle de compra ingrese 1: " << endl;
-        cout << "para leer los detalles de compra ingresa 2: " << endl;
-        cout << "para actualizar la tabla ingresa 3" << endl;
-        cout << "para borrar de la tabla ingresa 4 " << endl;
-        cout << "para salir presiona 0" << endl;
-        cin >> switch_on;
-        switch (switch_on)
-        {
-        case 1: crearD_compra(); break;
-
-        case 2: leerD_compra(); break;
-
-        case 3: actualizarD_Compra(); break;
-
-
-        case 4: borrarD_Compra(); break;
-
-
-        case 0: exit(-1);
-
-        default: cout << "error ingresa un caracter valido!!!!" << endl; break;
-        }
-
-
-    } while (1 == 1);
-
-}
-
-
-void crearD_compra()
-{
-    system("cls");
-    string idCompra, idProducto, canitdad, precio_costo_unitario, varDcom;
-    getline(cin, idCompra);
-    cout << "ingrese el id de la compra: " << endl;
-    getline(cin, idCompra);
-    cout << "ingrese el id del producto: " << endl;
-    getline(cin, idProducto);
-    cout << "ingrese la cantidad: " << endl;
-    getline(cin, canitdad);
-    cout << "ingrese el precio de costo unitario: " << endl;
-    getline(cin, precio_costo_unitario);
-
-    Compra_detalle cd = Compra_detalle(idCompra, idProducto, canitdad, precio_costo_unitario, varDcom);
-    cd.crear();
-    cd.leer();
-
-}
-
-void leerD_compra()
-{
-    system("cls");
-    string idCompra, idProducto, canitdad, precio_costo_unitario, varDcom;
-    cout << "------------TABLA DETALLES DE COMPRAS-----------" << endl;
-    cout << "------------------------------------" << endl;
-    Compra_detalle cd = Compra_detalle(idCompra, idProducto, canitdad, precio_costo_unitario, varDcom);
-    cd.leer();
-    system("pause");
-    system("cls");
-
-}
-
-void actualizarD_Compra()
-{
-    system("cls");
-    string idCompra, idProducto, canitdad, precio_costo_unitario, varDcom;
-    getline(cin, varDcom);
-    cout << "ingrese el id del detalle de compra que desea actualizar: " << endl;
-    getline(cin, varDcom);
-    cout << " ********" << endl;
-    getline(cin, idCompra);
-    cout << "ingrese el id de la compra que desea actualizar: " << endl;
-	getline(cin, idCompra);
-	cout << "ingrese e id del producto que desea actualizar: " << endl;
-	getline(cin, idProducto);
-	cout << "ingrese la cantidad que desea actualizar: " << endl;
-	getline(cin, canitdad);
-	cout << "ingrese el precio de costo unitario que desea actualizar: " << endl;
-	getline(cin, precio_costo_unitario);
-
-    Compra_detalle cd = Compra_detalle(idCompra, idProducto, canitdad, precio_costo_unitario, varDcom);
-    cd.actualizar();
-    cd.leer();
-    system("pause");
-    system("cls");
-
-}
-
-
-void borrarD_Compra()
-{
-    system("cls");
-    string idCompra, idProducto, canitdad, precio_costo_unitario, varDcom;
-    getline(cin, varDcom);
-    cout << "ingrese el id de la compra que desea borrar: " << endl;
-    getline(cin, varDcom);
-    Compra_detalle cd = Compra_detalle(idCompra, idProducto, canitdad, precio_costo_unitario, varDcom);
-    cd.borrar();
-    cd.leer();
-    system("pause");
-    system("cls");
-}   
-
-
-void Maestro_compras(){
-    //proveedores
-    string proveedor, nit, direccion, telefono, varpro;
-    //compras
-    string no_orden_compra, idproveedor, fecha_orden, fechaingreso, varcom;
-    //Producto
-    string producto, idMarca, Descripcion, Imagen, precio_costo, precio_venta, existencia, fecha_ingreso, var_producto;
-    //compra detalle
-	string idCompra, idProducto, canitdad, precio_costo_unitario, varDcom;
-
-    string idcompra = varcom;
-    string idproducto = var_producto;
-
-	cout << "MAESTRO DETALLE DE COMPRAS" << endl;
-    getline(cin, proveedor);
-	cout << "1. Proveedores" << endl;
-	getline (cin, proveedor);
-	cout << "2. nit " << endl;
-	getline (cin, nit);
-	cout << "3. direccion " << endl;
-	getline (cin, direccion);
-	cout << "4. telefono " << endl;
-	getline (cin, telefono);
-	
-    system("cls");
-    cout << "MAESTRO DETALLE DE COMPRAS" << endl;
-	getline(cin, no_orden_compra);
-	cout << "1. No orden de compra" << endl;
-	getline (cin, no_orden_compra);
-    varpro = idproveedor;
-    idproveedor = idproveedor;
-	cout << "2. fecha de orden de compra" << endl;
-	getline (cin, fecha_orden);
-	cout << "3. fecha de ingreso" << endl;
-	getline (cin, fechaingreso);
-	
-	system("cls");
-	cout << "MAESTRO DETALLE DE COMPRAS" << endl;
-	
-	getline(cin, producto);
-	cout << "1. Producto" << endl;
-	getline (cin, producto);
-	cout << "2. idMarca " << endl;
-	getline (cin, idMarca);
-	cout << "3. Descripcion " << endl;
-	getline (cin, Descripcion);
-	cout << "4. Imagen " << endl;
-	getline (cin, Imagen);
-	cout << "5. precio de costo " << endl;
-	getline (cin, precio_costo);
-	cout << "6. precio de venta " << endl;
-	getline (cin, precio_venta);
-	cout << "7. existencia " << endl;
-	getline (cin, existencia);
-	cout << "8. fecha de ingreso " << endl;
-	getline (cin, fecha_ingreso);
-	
-	Compra c = Compra(no_orden_compra, idproveedor, fecha_orden, fechaingreso, varcom);
-	c.crear();
-	c.leer();
-	
-    Producto p = Producto(producto, idMarca, Descripcion, Imagen, precio_costo, precio_venta, existencia, fecha_ingreso, var_producto);
-	p.crear();
-	p.leer();
-	
-	Compra_detalle cd = Compra_detalle(idCompra, idProducto, canitdad, precio_costo_unitario, varDcom);
-	cd.crear();
-	cd.leer();	
-	
-	
 }

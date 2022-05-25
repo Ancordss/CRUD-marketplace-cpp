@@ -19,7 +19,7 @@ void menu_Venta() {
     do
     {
         int switch_on = 0;
-        cout << "para realizar compra ingresa 1" << endl;
+        cout << "para realizar Nueva Venta ingresa 1" << endl;
         cout << "para leer la tabla ingresa 2" << endl;
         cout << "para actualizar la tabla ingresa 3" << endl;
         cout << "para borrar de la tabla ingresa 4 " << endl;

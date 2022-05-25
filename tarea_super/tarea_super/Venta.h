@@ -333,7 +333,6 @@ public: venta_detalle() {
                   while (fila = mysql_fetch_row(resultado)) {
                       cout <<" " << fila[0] << "             - " << fila[1] << "   -  " << fila[2] << "     -  " << fila[3] << endl;
                   }
-
               }
               else {
                   cout << " xxx Error al obtener las compras xxx" << endl;
