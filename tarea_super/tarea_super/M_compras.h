@@ -201,7 +201,7 @@ void crearcomprobante() {
         cout << "+---------------------------+" << endl;
         cout << "-->"; cin >> cont;
         cin.ignore();
-    } while (continuar == 's')
+    } while (continuar == 's');
 }
 
 void leerBoleto() {
