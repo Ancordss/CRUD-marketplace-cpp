@@ -117,55 +117,77 @@ void borrar_venta() {
 }
 
 void crearfactura() {
-    system("cls");
-    /*time_t t = time(NULL);
-    tm* tPtr = localtime(&t);*/
-    char cont = 's';
-    int nofactura;
-    int serie = 1;
-    string fechaF, idcl, idemp, fechaI;
-    string cant, pre_uni, idV, idP, v;
-
-    nofactura = +1;
-    string noF = to_string(nofactura);
-    cout << "nofactura: "  << noF << endl; // automatico
-
-    string sr = to_string(serie);
-    cout << "serie:" <<sr << endl; //automatico
-
-    //cout << " fecha de ingreso "<< (tPtr->tm_hour)<<":"<< (tPtr->tm_min)<<" : "<< (tPtr->tm_sec) <<""<< endl;
-
-
-    getline(cin, idcl);
-    cout << "id del cliente: " << endl;
-    getline(cin, idcl);
-    cout << "id del empleado: " << endl;
-    getline(cin, idemp);
-
-    Venta u = Venta(noF, sr, fechaF, idcl, idemp, fechaI, v);
-    u.crear();
-    u.leeru();
-
-    cout << "id de la venta: ";
-    getline(cin, idV);
+    int nofactura = 0;
+    char continuar = 's';
     do {
-        cout << "id del producto: " << endl;
-        getline(cin, idP);
-        cout << "cantidad: " << endl;
-        getline(cin, cant);
-        cout << "precio_unitario" << endl;
-        getline(cin, pre_uni);
+        system("cls");
+        /*time_t t = time(NULL);
+        tm* tPtr = localtime(&t);*/
+        char cont = 's';
+        int c;
+        int serie = 1;
+        string fechaF, idcl, idemp, fechaI;
+        string cant, pre_uni, idV, idP, v;
+        getline(cin, idcl);
+        nofactura++;
+        string noF = to_string(nofactura);
+        cout << "nofactura: " << noF << endl; // automatico
+
+        string sr = to_string(serie);
+        cout << "serie:" << sr << endl; //automatico
+
+        //cout << " fecha de ingreso "<< (tPtr->tm_hour)<<":"<< (tPtr->tm_min)<<" : "<< (tPtr->tm_sec) <<""<< endl;
+
+        
+        
+        cout << "+---------------------------+" << endl;
+        cout << "|ingrese id del cliente: " << endl;
+        cout << "+---------------------------+" << endl;
+        cout << "-->"; getline(cin, idcl);
+        cout << "+---------------------------+" << endl;
+        cout << "|ingrese id del empleado: " << endl;
+        cout << "+---------------------------+" << endl;
+        cout << "-->";  getline(cin, idemp);
+
+        Venta u = Venta(noF, sr, fechaF, idcl, idemp, fechaI, v);
+        u.crear();
+        u.leeru();
+
+        cout << "+---------------------------+" << endl;
+        cout << "ingrese el id de la venta: " << endl;
+        cout << "+---------------------------+" << endl;
+        cout << "-->"; getline(cin, idV);
+        do {
+            cout << "+---------------------------+" << endl;
+            cout << "ingrese el id del producto: " << endl;
+            cout << "+---------------------------+" << endl;
+            cout << "-->"; getline(cin, idP);
+            cout << "+---------------------------+" << endl;
+            cout << "ingrese la cantidad: " << endl;
+            cout << "+---------------------------+" << endl;
+            cout << "-->"; getline(cin, cant);
+            cout << "+---------------------------+" << endl;
+            cout << "ingrese precio_unitario: " << endl;
+            cout << "+---------------------------+" << endl;
+            cout << "-->"; getline(cin, pre_uni);
+
+            venta_detalle a = venta_detalle(cant, pre_uni, idV, idP, v);
+            a.crear();
+            cout << "+---------------------------+" << endl;
+            cout << "agregar mas productos ? s/n";
+            cout << "+---------------------------+" << endl;
+            cout << "-->"; cin >> cont;
+            cin.ignore();
+        } while (cont == 's');
+        nofactura = nofactura + 1;
 
         venta_detalle a = venta_detalle(cant, pre_uni, idV, idP, v);
-        a.crear();
-        cout << "agregar mas ? s/n";
-        cin >> cont;
+        a.leer();
+        cout << "+---------------------------+" << endl;
+        cout << "realizar otra venta? (s/n)" << endl;
+        cout << "+---------------------------+" << endl;
+        cout << "-->"; cin >> continuar;
         cin.ignore();
-    } while (cont == 's');
-    nofactura = nofactura + 1;
-
-    venta_detalle a = venta_detalle(cant, pre_uni, idV, idP, v);
-    a.leer();
-
+    } while (continuar== 's');
 
 }

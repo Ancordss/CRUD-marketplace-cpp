@@ -1,3 +1,8 @@
+//para regresar al menu en cada menu agregar un case para regresar al menu principal. [eso lo ve james XD]
+// maria colores y menus decoracion
+//carlos agregar arduino
+//mandar a imprimir factura [james]  
+//logo para terminar agregar a la factura.
 #pragma once
 #include <iostream>
 #include <stdlib.h>
@@ -11,8 +16,8 @@
 #include "Proveedor.h"
 #include "M_compras.h"
 #include "Producto.h"
+#include <windows.h>
 using namespace std;
-
 
 /*menu principal*/
 void menuUser();
@@ -68,15 +73,22 @@ void borrarC();
 void actualizarC();
 void leerC();
 
-void menuUser() {
+void menuUser() { 
+       HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE) ;
+       system("cls");
+
+       
     do
     {
         int switch_on = 0;
-        cout << "ingresar en modo?" << endl;
-        cout << "Administrador (1)" << endl;
-        cout << "empleado (2)" << endl;
-        cout << "para salir presiona 0" << endl;
-        cin >> switch_on;
+
+        SetConsoleTextAttribute (hConsole, 2);  cout <<  "+-------------------------------------+" << endl;
+        SetConsoleTextAttribute (hConsole, 14); cout <<  "|    Selecciona tipo de usuario:      |" << endl;
+        SetConsoleTextAttribute (hConsole, 14); cout <<  "|       * Administrador   (1)         |" << endl;
+        SetConsoleTextAttribute (hConsole, 14); cout <<  "|       * Empleado        (2)         |" << endl;
+        SetConsoleTextAttribute (hConsole, 14); cout <<  "|   para salir presiona 0             |" << endl;
+        SetConsoleTextAttribute (hConsole, 2);  cout <<  "+-------------------------------------+" << endl;
+        cout << "-->"; cin >> switch_on;
         switch (switch_on)
         {
         case 1:  system("cls"); Madmin(); break;
@@ -98,22 +110,28 @@ void menuUser() {
 
 
 void Madmin() {
+     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE) ;
+     system("cls");
+
     do
     {
         int switch_on = 0;
-        cout << "administrar empleados (1)" << endl;
-        cout << "administrar Producto (2)"<< endl;
-        cout << "administra proveedores (3)" << endl;
-        cout << " Realizar comprar a proveedores (4)" << endl;
-        cout << "mostrar opciones de empleados (5)" << endl;
-        cout << "para salir presiona 0" << endl;
-        cin >> switch_on;
+      
+        SetConsoleTextAttribute (hConsole, 1); cout << "+------------------------------------------+" << endl;
+        SetConsoleTextAttribute (hConsole, 3); cout << "|      administrar empleados          (1)  |" << endl;
+        SetConsoleTextAttribute (hConsole, 3); cout << "|      administrar Producto           (2)  |"<< endl;
+        SetConsoleTextAttribute (hConsole, 3); cout << "|      administra proveedores         (3)  |" << endl;
+        SetConsoleTextAttribute (hConsole, 3); cout << "|      Realizar comprar a proveedores (4)  |" << endl;
+        SetConsoleTextAttribute (hConsole, 3); cout << "|      mostrar opciones de empleados  (5)  |" << endl;
+        SetConsoleTextAttribute (hConsole, 3); cout << "|      para salir presiona            (0)  |" << endl;
+        SetConsoleTextAttribute (hConsole, 1); cout << "+------------------------------------------+" << endl;
+        cout << "-->"; cin >> switch_on;
         switch (switch_on)
         {
         case 1: system("cls"); menu_empleados(); break;
         case 2: system("cls"); M_producto(); break;
 		case 3: system("cls"); M_proveedor(); break;
-        case 4: system("cls");  M_compras(); break;
+        case 4: system("cls"); crearcomprobante(); break; //M_compras(); break;
         case 5: system("cls"); M_empleado(); break;
 
 
@@ -129,17 +147,21 @@ void Madmin() {
 
 
 void M_empleado() {
+     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE) ;
+     system("cls");
     do
     {
         int switch_on = 0;
-        cout << "Venta (1)" << endl;
-        cout << "gestionar Producto (2)" << endl;
-        cout << "registra Cliente (3)" << endl;
-        cout << "para salir presiona 0" << endl;
+        SetConsoleTextAttribute (hConsole, 4);cout << "+----------------------------------+" << endl;
+        SetConsoleTextAttribute (hConsole,15);cout << "|     Realizar Venta          (1)  |" << endl;
+        SetConsoleTextAttribute (hConsole,15);cout << "|     gestionar Producto      (2)  |" << endl;
+        SetConsoleTextAttribute (hConsole,15);cout << "|     registra Cliente        (3)  |" << endl;
+        SetConsoleTextAttribute (hConsole,15);cout << "|     para salir presiona     (0)  |" << endl;
+        SetConsoleTextAttribute (hConsole, 4);cout << "+----------------------------------+" << endl;
         cin >> switch_on;
         switch (switch_on)
         {
-        case 1: system("cls"); menu_Venta(); break;
+        case 1: system("cls"); crearfactura(); break;//menu_Venta(); break;
         case 2: system("cls"); subM_Producto(); break;
         case 3: system("cls"); menu_clientes(); break;
 
@@ -157,12 +179,15 @@ void M_empleado() {
 
 
 void M_producto() {
+     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE) ;
+     system("cls");
+
     do
     {
-        cout << "xxx seleciona que quieres hacer:" << endl;
-        cout << "1. Producto" << endl;
-        cout << "2. Marca " << endl;
-        cout << "3. SALIR " << endl;
+        SetConsoleTextAttribute(hConsole, 2); cout << "****   selecciona una opción:   ****" << endl;
+        SetConsoleTextAttribute(hConsole, 10); cout << "1. Producto" << endl;
+        SetConsoleTextAttribute(hConsole, 10); cout << "2. Marca " << endl;
+        SetConsoleTextAttribute(hConsole, 10); cout << "3. SALIR " << endl;
         int opcion;
         cin >> opcion;
         switch (opcion) {
@@ -186,13 +211,18 @@ void M_producto() {
 
 
 void M_clientes() {
+     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE) ;
+     system("cls");
+
     do
     {
         int switch_on = 0;
-        cout << "para agregar cliente ingrese 1" << endl;
-        cout << "para agregar empleado ingrese 2" << endl;
-        cout << "para hacer una venta ingrese 3" << endl;
-        cout << "para salir presiona 0" << endl;
+        SetConsoleTextAttribute (hConsole, 1);cout << "+-------------------------------------+" << endl;
+        SetConsoleTextAttribute (hConsole, 1);cout << "| para agregar cliente ingrese  (1)   |" << endl;
+        SetConsoleTextAttribute(hConsole, 1); cout << "| para agregar empleado ingrese (2)   |" << endl;
+        SetConsoleTextAttribute(hConsole, 1); cout << "| para hacer una venta ingrese  (3)   |" << endl;
+        SetConsoleTextAttribute (hConsole, 1);cout << "| para salir presiona           (0)   |" << endl;
+        SetConsoleTextAttribute (hConsole, 1);cout << "+-------------------------------------+" << endl;
         cin >> switch_on;
         switch (switch_on)
         {
@@ -215,14 +245,19 @@ void M_clientes() {
 
 
 void menu_clientes() {
+     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE) ;
+     system("cls");
+
     do
     {
         int switch_on = 0;
-        cout << "para agregar contenido ingresa 1" << endl;
-        cout << "para leer la tabla ingresa 2" << endl;
-        cout << "para actualizar la tabla ingresa 3" << endl;
-        cout << "para borrar de la tabla ingresa 4 " << endl;
-        cout << "para salir presiona 0" << endl;
+        SetConsoleTextAttribute(hConsole, 1); cout << "+----------------------------------------------+" << endl;
+        SetConsoleTextAttribute(hConsole, 1); cout << "|   para agregar contenido ingresa      (1)    |" << endl;
+        SetConsoleTextAttribute(hConsole, 1); cout << "|   para leer la tabla ingresa          (2)    |" << endl;
+        SetConsoleTextAttribute(hConsole, 1); cout << "|   para actualizar la tabla ingresa    (3)    |" << endl;
+        SetConsoleTextAttribute(hConsole, 1); cout << "|   para borrar de la tabla ingresa     (4)    |" << endl;
+        SetConsoleTextAttribute(hConsole, 1); cout << "|   para salir presiona                 (0)    |" << endl;
+        SetConsoleTextAttribute(hConsole, 1); cout << "+----------------------------------------------+" << endl;
         cin >> switch_on;
         switch (switch_on)
         {
@@ -248,19 +283,24 @@ void menu_clientes() {
 
 
 void menu_empleados() {
+     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE) ;
+     system("cls");
+
     do
     {
         int switch_on = 0;
-        cout << "para agregar empleado ingresa 1" << endl;
-        cout << "para leer la tabla empleados ingresa 2" << endl;
-        cout << "para actualizar un empleado ingresa 3" << endl;
-        cout << "para borrar de la tabla empleados ingresa 4 " << endl;
-        cout << "-------------------------------------------------------" << endl;
-        cout << "para agregar puesto ingresa 5" << endl;
-        cout << "para leer la tabla puestos ingresa 6" << endl;
-        cout << "para actualizar un puesto ingresa 7" << endl;
-        cout << "para borrar de la tabla puesto ingresa 8 " << endl;
-        cout << "para salir presiona 0" << endl;
+        SetConsoleTextAttribute(hConsole, 1); cout << "+----------------------------------------------------+" << endl;
+        SetConsoleTextAttribute(hConsole, 1); cout << "|    para agregar empleado ingresa              (1)  |" << endl;
+        SetConsoleTextAttribute(hConsole, 1); cout << "|    para leer la tabla empleados ingresa       (2)  |" << endl;
+        SetConsoleTextAttribute(hConsole, 1); cout << "|    para actualizar un empleado ingresa        (3)  |" << endl;
+        SetConsoleTextAttribute(hConsole, 1); cout << "|    para borrar de la tabla empleados ingresa  (4)  |" << endl;
+        SetConsoleTextAttribute(hConsole, 1); cout << "+====================================================+" << endl;
+        SetConsoleTextAttribute(hConsole, 3); cout << "|    para agregar puesto ingresa                (5)  |" << endl;
+        SetConsoleTextAttribute(hConsole, 3); cout << "|    para leer la tabla puestos ingresa         (6)  |" << endl;
+        SetConsoleTextAttribute(hConsole, 3); cout << "|    para actualizar un puesto ingresa          (7)  |" << endl;
+        SetConsoleTextAttribute(hConsole, 3); cout << "|    para borrar de la tabla puesto ingresa     (8)  |" << endl;
+        SetConsoleTextAttribute(hConsole, 3); cout << "|    para salir presiona                        (0)  |" << endl;
+        SetConsoleTextAttribute(hConsole, 3); cout << "+----------------------------------------------------+" << endl;
         cin >> switch_on;
         switch (switch_on)
         {

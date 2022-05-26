@@ -89,6 +89,7 @@ public:
             q_estado = mysql_query(cn.getConectar(), i);
             if (!q_estado) {
                 cout << "ingreso exitoso" << endl;
+                system("pause");
             }
             else {
                 cout << "error al insertar" << endl;
@@ -166,12 +167,8 @@ public:
         cn.abrir_conexion();
         if (cn.getConectar()) {
             cout << "------------ id de la venta ------------" << endl;
-            string consulta = "select idVentas,\
-                                CASE\
-                                WHEN nofactura = '" + nofactura + "' then '" + nofactura + "'\
-                                ELSE 'error'\
-                                end as ID\
-                                From ventas;";
+            string consulta = "select idVentas from ventas\
+                               WHERE nofactura = '" + nofactura + "';";
             const char* c = consulta.c_str();
             q_estado = mysql_query(cn.getConectar(), c);
             if (!q_estado) {
@@ -400,7 +397,19 @@ public: venta_detalle() {
               const char* i = insert.c_str();
               q_estado = mysql_query(cn.getConectar(), i);
               if (!q_estado) {
-                  cout << "ingreso exitoso" << endl;
+                  //cout << "" << endl;
+                  int segundos = 5;
+                  for (int i = 0; i <= 10; i++)//21
+                      cout << "\n";
+                  cout << "\t\t\t\t CARGANDO... \n";
+                  for (int i = 0; i <= 79; i++)//7|9
+                      cout << "";
+                  for (int i = 0; i <= 79; i++)//79
+                  {
+                      cout << char(219);
+                      Sleep(segundos * 100 / 80);
+                  }
+                  cout << "\nCompletado!";
               }
               else {
                   cout << "error al insertar" << endl;

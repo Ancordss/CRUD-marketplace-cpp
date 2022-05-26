@@ -131,61 +131,77 @@ void borrarCompra()
 }
 
 void crearcomprobante() {
-
-    system("cls");
-    /*time_t t = time(NULL);
-    tm* tPtr = localtime(&t);*/
-    char cont = 's';
-    int no_orden_compra;
-    string  idproveedor, fecha_orden, fechaingreso , varcom;
-    string  idCompra, idProducto, canitdad, precio_costo_unitario, varDcom;
-	
-    int num, c;
-    srand(time(NULL));
-
-    for (c = 1; c <= 10; c++)
-    {
-        num = 1 + rand() % (501 - 1);
-    }
-    no_orden_compra = num;
-    num = no_orden_compra; 
-    string no_ord = to_string(no_orden_compra);
-	cout <<"*******************************" << endl;
-	cout << " No. Orden de Compra: " << no_ord << endl; // numero de orden de compra aleatorio 
-    cout << "*******************************" << endl;
-	
-    getline(cin, idproveedor);
-    cout << " Id Proveedor:   ";
-	getline(cin, idproveedor);
-	
-    Compra co = Compra(no_ord, idproveedor, fecha_orden, fechaingreso, varcom);
-	co.crear();
-	co.leer();
-
-	cout << "Ingrese el id de la compra para comprobar " << endl;
-	getline(cin, idCompra);
+    char continuar = 's';
     do {
-		cout << " Id Producto: " << endl;
-		getline(cin, idProducto);
-		cout << " Cantidad: " << endl;
-		getline(cin, canitdad);
-		cout << " Precio Costo Unitario: " << endl;
-		getline(cin, precio_costo_unitario);
-		
-		Compra_detalle cd = Compra_detalle(idCompra, idProducto, canitdad, precio_costo_unitario, varDcom);
-		cd.crear();
+        system("cls");
+        /*time_t t = time(NULL);
+        tm* tPtr = localtime(&t);*/
+        char cont = 's';
+        int no_orden_compra;
+        string  idproveedor, fecha_orden, fechaingreso, varcom;
+        string  idCompra, idProducto, canitdad, precio_costo_unitario, varDcom;
+
+        int num, c;
+        srand(time(NULL));
+
+        for (c = 1; c <= 10; c++)
+        {
+            num = 1 + rand() % (501 - 1);
+        }
+        no_orden_compra = num;
+        num = no_orden_compra;
+        string no_ord = to_string(no_orden_compra);
+        cout << "+---------------------------+" << endl;
+        cout << " No. Orden de Compra: " << no_ord << endl; // numero de orden de compra aleatorio 
+        cout << "+---------------------------+" << endl;
+
+        getline(cin, idproveedor);
+        cout << "+---------------------------+" << endl;
+        cout << " Id Proveedor:   " << endl;
+        cout << "+---------------------------+" << endl;
+        cout << "-->"; getline(cin, idproveedor);
+
+        Compra co = Compra(no_ord, idproveedor, fecha_orden, fechaingreso, varcom);
+        co.crear();
+        co.leer();
+
+        cout << "+---------------------------+" << endl;
+        cout << "Ingrese el id de la compra para comprobar " << endl;
+        cout << "+---------------------------+" << endl;
+        cout << "-->"; getline(cin, idCompra);
+        do {
+            cout << "+---------------------------+" << endl;
+            cout << " Id Producto: " << endl;
+            cout << "+---------------------------+" << endl;
+            cout << "-->"; getline(cin, idProducto);
+            cout << "+---------------------------+" << endl;
+            cout << " Cantidad: " << endl;
+            cout << "+---------------------------+" << endl;
+            cout << "-->"; getline(cin, canitdad);
+            cout << "+---------------------------+" << endl;
+            cout << " Precio Costo Unitario: " << endl;
+            cout << "+---------------------------+" << endl;
+            cout << "-->"; getline(cin, precio_costo_unitario);
+
+            Compra_detalle cd = Compra_detalle(idCompra, idProducto, canitdad, precio_costo_unitario, varDcom);
+            cd.crear();
+            cd.leer();
+            cout << "+---------------------------+" << endl;
+            cout << " Desea ingresar otro producto? (s/n): " << endl;
+            cout << "+---------------------------+" << endl;
+            cout << "-->"; cin >> cont;
+            cin.ignore();
+
+        } while (cont == 's');
+
+        Compra_detalle cd = Compra_detalle(idCompra, idProducto, canitdad, precio_costo_unitario, varDcom);
         cd.leer();
-
-		cout << " Desea ingresar otro producto? (s/n): " << endl;
-		cin >> cont;
+        cout << "+---------------------------+" << endl;
+        cout << "realizar otra compra? s/n" << endl;
+        cout << "+---------------------------+" << endl;
+        cout << "-->"; cin >> cont;
         cin.ignore();
-		
-    } while (cont == 's');
-	
-	Compra_detalle cd = Compra_detalle(idCompra, idProducto, canitdad, precio_costo_unitario, varDcom);
-	cd.leer();
-	system ("pause");
-
+    } while (continuar == 's')
 }
 
 void leerBoleto() {
