@@ -150,7 +150,7 @@ void crearfactura() {
         
         
         cout << "+---------------------------+" << endl;
-        cout << "|ingrese id del cliente: " << endl;
+        cout << "|ingrese id del cliente: " << endl; //esto tiene que ser por nit
         cout << "+---------------------------+" << endl;
         cout << "-->"; getline(cin, idcl);
         cout << "+---------------------------+" << endl;
@@ -161,7 +161,7 @@ void crearfactura() {
         Venta u = Venta(noF, sr, fechaF, idcl, idemp, fechaI, v);
         u.crear();
         u.leeru();
-
+        // esto se tiene que pasar automatico
         cout << "+---------------------------+" << endl;
         cout << "ingrese el id de la venta: " << endl;
         cout << "+---------------------------+" << endl;
@@ -170,13 +170,13 @@ void crearfactura() {
             cout << "+---------------------------+" << endl;
             cout << "ingrese el id del producto: " << endl;
             cout << "+---------------------------+" << endl;
-            cout << "-->"; getline(cin, idP);
+            cout << "-->"; getline(cin, idP);               //tiene que mostrar el producto que se ingresa
             cout << "+---------------------------+" << endl;
-            cout << "ingrese la cantidad: " << endl;
+            cout << "ingrese la cantidad: " << endl; 
             cout << "+---------------------------+" << endl;
             cout << "-->"; getline(cin, cant);
             cout << "+---------------------------+" << endl;
-            cout << "ingrese precio_unitario: " << endl;
+            cout << "ingrese precio_unitario: " << endl; // precio unitario tiene que agarrarse del que ya esta ingresado
             cout << "+---------------------------+" << endl;
             cout << "-->"; getline(cin, pre_uni);
 
