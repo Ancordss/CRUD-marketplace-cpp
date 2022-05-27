@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <conio.h>
 #include <fstream>
+#include "Cliente.h"    
 
 
 
@@ -89,15 +90,17 @@ public:
         if (cn.getConectar()) {
             // string insert = "INSERT INTO estudiantes(carnet,nombres,apellidos,direccion,telefono,genero,email,fecha_nacimiento)VALUES('" + carnet + "','" + nombres + "','" + apellido + "','" + direccion + "','" + telefono + "','" + genero + "','" + email + "','" + fecha_nacimiento + "'); ";
             //string insert = "INSERT INTO ventas(nofactura,serie,fechafactura,idcliente,idempleado,fechaingreso)VALUES('" + nofactura + "','" + serie + "','" + fechafactura + "', '" + idcliente + "', '" + idempleado + "','" + fecha_ingreso + "'); ";
-            string insert = "INSERT INTO ventas(nofactura,serie,fechafactura,idcliente,idempleado,fechaingreso)VALUES('" + nofactura + "','" + serie + "',NOW(), '" + idcliente + "', '" + idempleado + "',NOW()); ";
+            //string insert = "INSERT INTO ventas(nofactura,serie,fechafactura,idempleado,fechaingreso)VALUES('" + nofactura + "','" + serie + "',NOW(), '" + idempleado + "',NOW()); ";
+            string insert = "INSERT INTO ventas(nofactura,serie,fechafactura,idcliente,idempleado,fechaingreso)VALUES('" + nofactura + "', '" + serie + "', NOW(), (select idClientes from clientes where clientes.NIT = '" + idcliente + "'), '" + idempleado + "', NOW()); ";
             const char* i = insert.c_str();
             q_estado = mysql_query(cn.getConectar(), i);
             if (!q_estado) {
-                cout << "ingreso exitoso" << endl;
-                system("pause");
+               // cout << "ingreso exitoso" << endl;
+                //system("pause");
             }
             else {
-                cout << "error al insertar" << endl;
+                cout << "usuario no registrado..." << endl;
+                system("pause");
             }
 
         }
@@ -195,6 +198,69 @@ public:
         cn.cerrar_conexion();
     }
 
+    void leerCV() {
+        int q_estado;
+        ConexionBD cn = ConexionBD();
+        MYSQL_ROW fila;
+        MYSQL_RES* resultado;
+        cn.abrir_conexion();
+        if (cn.getConectar()) {
+            cout << endl;
+
+            string consulta = "select nombres, apellidos\
+                               from clientes where NIT = '" + idcliente + "';";
+            const char* c = consulta.c_str();
+            q_estado = mysql_query(cn.getConectar(), c);
+            if (!q_estado) {
+                resultado = mysql_store_result(cn.getConectar());
+                while (fila = mysql_fetch_row(resultado)) {
+                    cout<< " cliente: " << fila[0] << " " << fila[1]  << endl;
+                }
+
+            }
+            else {
+                cout << " xxx Error al Consultar  xxx" << endl;
+            }
+
+            consulta = "select NIT\
+                               from clientes where NIT = '" + idcliente + "';";
+            c = consulta.c_str();
+            q_estado = mysql_query(cn.getConectar(), c);
+            if (!q_estado) {
+                resultado = mysql_store_result(cn.getConectar());
+                while (fila = mysql_fetch_row(resultado)) {
+                    cout << " NIT: " << fila[0] << endl;
+                }
+
+            }
+            else {
+                cout << " xxx Error al Consultar  xxx" << endl;
+            }
+
+            consulta = "select telefono\
+                        from clientes where NIT = '" + idcliente + "';";
+            c = consulta.c_str();
+            q_estado = mysql_query(cn.getConectar(), c);
+            if (!q_estado) {
+                resultado = mysql_store_result(cn.getConectar());
+                while (fila = mysql_fetch_row(resultado)) {
+                    cout << " Telefono: " << fila[0] << endl;
+                }
+
+            }
+            else {
+                cout << " xxx Error al Consultar  xxx" << endl;
+            }
+            cout << "+---------------------------------------------------------------------------------------+" << endl;
+
+        }
+        else {
+            cout << "Error al leer" << endl;
+            system("pause");
+        }
+        cn.cerrar_conexion();
+    }
+
 };
 
 class venta_detalle
@@ -237,7 +303,10 @@ public: venta_detalle() {
               cout << "-----------------Factura generada-----------------" << endl;
               cout << "--------------------------------------------------" << endl;
               cout << "--------------------------------------------------" << endl;
-              string consulta = "SELECT ventas.serie from ventas where idVentas='" +idVenta+ "'; ";
+              string consulta = "SELECT ventas.serie from ventas\
+                                 inner join clientes on ventas.idcliente = clientes.idClientes\
+                                 where clientes.NIT = '" + idVenta + "'\
+                                 order by ventas.serie DESC limit 1; ";
               const char* c = consulta.c_str();
               q_estado = mysql_query(cn.getConectar(), c);
               if (!q_estado) {
@@ -252,7 +321,10 @@ public: venta_detalle() {
               }
 
               //no factura manda a mostrar 
-              consulta = "SELECT ventas.nofactura from ventas where idVentas='" + idVenta + "'; ";
+              consulta = "SELECT ventas.nofactura from ventas\
+                                 inner join clientes on ventas.idcliente = clientes.idClientes\
+                                 where clientes.NIT = '" + idVenta + "'\
+                                 order by ventas.serie DESC limit 1; ";
               c = consulta.c_str();
               q_estado = mysql_query(cn.getConectar(), c);
               if (!q_estado) {
@@ -267,7 +339,10 @@ public: venta_detalle() {
               }
 
               //muestra fecha 
-              consulta = "SELECT ventas.fechaingreso from ventas where idVentas='" + idVenta + "'; ";
+              consulta = "SELECT ventas.fechaingreso from ventas\
+                                 inner join clientes on ventas.idcliente = clientes.idClientes\
+                                 where clientes.NIT = '" + idVenta + "'\
+                                 order by ventas.serie DESC limit 1; ";
               c = consulta.c_str();
               q_estado = mysql_query(cn.getConectar(), c);
               if (!q_estado) {
@@ -282,11 +357,7 @@ public: venta_detalle() {
               }
 
               //muestra cliente
-              consulta = "SELECT clientes.nombres, clientes.apellidos\
-                          from ventas\
-                          inner join clientes\
-                          on ventas.idcliente = clientes.idClientes\
-                          where ventas.idVentas='" + idVenta + "'; ";
+              consulta = "select nombres,apellidos from clientes where NIT = '" + idVenta + "'; ";
               c = consulta.c_str();
               q_estado = mysql_query(cn.getConectar(), c);
               if (!q_estado) {
@@ -301,11 +372,7 @@ public: venta_detalle() {
               }
 
               //muestra nit
-              consulta = "SELECT clientes.NIT\
-                          from ventas\
-                          inner join clientes\
-                          on ventas.idcliente = clientes.idClientes\
-                          where ventas.idVentas='" + idVenta + "'; ";
+              consulta = "select clientes.NIT from clientes where NIT = '" + idVenta + "'; ";
               c = consulta.c_str();
               q_estado = mysql_query(cn.getConectar(), c);
               if (!q_estado) {
@@ -323,17 +390,19 @@ public: venta_detalle() {
               cout << "|        codigo        | cant | precio_U | |Total|" << endl;
               cout << '\n';
               //muestra compras
-              consulta = "SELECT productos.producto, ventas_detalle.cantidad, ventas_detalle.precio_unitario, cantidad * precio_unitario AS total\
-                          from ventas_detalle\
-                          inner join productos\
-                          on ventas_detalle.idproducto=productos.idProducto\
-                          where ventas_detalle.idVentas ='" +idVenta + "' and productos.existencia>0; ";
+              consulta = "SELECT productos.producto, marcas.marca, ventas_detalle.cantidad, ventas_detalle.precio_unitario, cantidad * precio_unitario AS total\
+                  from ventas\
+                  inner join clientes on clientes.idClientes = ventas.idcliente\
+                  inner join ventas_detalle on ventas_detalle.idVentas = ventas.idVentas\
+                  inner join productos on productos.idProducto = ventas_detalle.idproducto\
+                  inner join marcas on marcas.idMarca = productos.idMarca\
+                  where ventas_detalle.idVentas =(SELECT ventas.idVentas FROM ventas  INNER JOIN clientes ON  ventas.idcliente=clientes.idClientes where clientes.NIT='" + idVenta + "' order by idVentas DESC limit 1); ";
               c = consulta.c_str();
               q_estado = mysql_query(cn.getConectar(), c);
               if (!q_estado) {
                   resultado = mysql_store_result(cn.getConectar());
                   while (fila = mysql_fetch_row(resultado)) {
-                      cout <<" " << fila[0] << "             - " << fila[1] << "   -  " << fila[2] << "     -  " << fila[3] << endl;
+                      cout <<" " << fila[0] << " " << fila[1] << "       -  " << fila[2] << "     -  " << fila[3]<< " - " << fila[4] << endl;
                   }
               }
               else {
@@ -345,7 +414,7 @@ public: venta_detalle() {
                           from ventas_detalle\
                           inner join productos\
                           on ventas_detalle.idproducto = productos.idProducto\
-                          where ventas_detalle.idVentas ='" + idVenta + "' and productos.existencia > 0; ";
+                          where ventas_detalle.idVentas = (SELECT ventas.idVentas FROM ventas  INNER JOIN clientes ON  ventas.idcliente = clientes.idClientes where clientes.NIT ='" + idVenta + "' order by idVentas DESC limit 1) and productos.existencia > 0; ";
               c = consulta.c_str();
               q_estado = mysql_query(cn.getConectar(), c);
               if (!q_estado) {
@@ -366,7 +435,7 @@ public: venta_detalle() {
                           from empleados\
                           inner join ventas\
                           on ventas.idempleado = empleados.idempleado\
-                          where ventas.idVentas ='" + idVenta + "'; ";
+                          where ventas.idVentas = (SELECT ventas.idVentas FROM ventas  INNER JOIN clientes ON  ventas.idcliente = clientes.idClientes where clientes.NIT ='" + idVenta + "' order by idVentas DESC limit 1); ";
               c = consulta.c_str();
               q_estado = mysql_query(cn.getConectar(), c);
               if (!q_estado) {
@@ -394,29 +463,17 @@ public: venta_detalle() {
           cn.abrir_conexion();
           if (cn.getConectar()) {
               // string insert = "INSERT INTO estudiantes(carnet,nombres,apellidos,direccion,telefono,genero,email,fecha_nacimiento)VALUES('" + carnet + "','" + nombres + "','" + apellido + "','" + direccion + "','" + telefono + "','" + genero + "','" + email + "','" + fecha_nacimiento + "'); ";
-              string insert = "INSERT INTO ventas_detalle(idVentas,idProducto,cantidad,Precio_Unitario)VALUES('" + idVenta + "','" + idProducto + "','" + cantidad + "','" + precio_unitario + "'); ";
+              string insert = "INSERT INTO ventas_detalle(idVentas,idProducto,cantidad,Precio_Unitario)VALUES((SELECT ventas.idVentas FROM ventas  INNER JOIN clientes ON  ventas.idcliente=clientes.idClientes where clientes.NIT='" + idVenta + "' order by idVentas DESC limit 1),'"+ idProducto+ "','" + cantidad + "','" + precio_unitario + "'); ";
               // string insert = "INSERT INTO productos(producto,idMarca,Descripcion,precio_costo,precio_venta,existencia,fecha_ingreso)VALUES('" + nombres + "','" + idMarca + "','" + descripcion + "','" + precio_costo + "','" + precio_venta + "','" + existencia + "','" + fecha_ingreso + "'); ";
               const char* i = insert.c_str();
               q_estado = mysql_query(cn.getConectar(), i);
               if (!q_estado) {
-                  //cout << "" << endl;
-                  int segundos = 5;
-                  for (int i = 0; i <= 10; i++)//21
-                      cout << "\n";
-                  cout << "\t\t\t\t CARGANDO... \n";
-                  for (int i = 0; i <= 79; i++)//7|9
-                      cout << "";
-                  for (int i = 0; i <= 79; i++)//79
-                  {
-                      cout << char(219);
-                      Sleep(segundos * 100 / 80);
-                  }
-                  cout << "\nCompletado!" << endl;
+                  cout << "     ok!" << endl;
               }
               else {
                   cout << "error al insertar" << endl;
               }
-              system("cls");
+              
           }
           else {
               cout << "Error al leer" << endl;
@@ -479,7 +536,7 @@ public: venta_detalle() {
           }
           cn.cerrar_conexion();
       }
-
+      
       void leerI() {
           int q_estado;
           ConexionBD cn = ConexionBD();
@@ -487,18 +544,14 @@ public: venta_detalle() {
           MYSQL_RES* resultado;
           cn.abrir_conexion();
           if (cn.getConectar()) {
-              //system("cls");
-              //char s;
-              //copia la salida a el archivo texto.txt
               freopen("texto.txt", "w", stdout);
-             
-              //stream = freopen("texto.txt", "w", stderr);
-              //s = _getch();
-              //
               cout << "-----------------Factura generada-----------------" << endl;
               cout << "--------------------------------------------------" << endl;
               cout << "--------------------------------------------------" << endl;
-              string consulta = "SELECT ventas.serie from ventas where idVentas='" + idVenta + "'; ";
+              string consulta = "SELECT ventas.serie from ventas\
+                                 inner join clientes on ventas.idcliente = clientes.idClientes\
+                                 where clientes.NIT = '" + idVenta + "'\
+                                 order by ventas.serie DESC limit 1; ";
               const char* c = consulta.c_str();
               q_estado = mysql_query(cn.getConectar(), c);
               if (!q_estado) {
@@ -513,7 +566,10 @@ public: venta_detalle() {
               }
 
               //no factura manda a mostrar 
-              consulta = "SELECT ventas.nofactura from ventas where idVentas='" + idVenta + "'; ";
+              consulta = "SELECT ventas.nofactura from ventas\
+                                 inner join clientes on ventas.idcliente = clientes.idClientes\
+                                 where clientes.NIT = '" + idVenta + "'\
+                                 order by ventas.serie DESC limit 1; ";
               c = consulta.c_str();
               q_estado = mysql_query(cn.getConectar(), c);
               if (!q_estado) {
@@ -528,7 +584,10 @@ public: venta_detalle() {
               }
 
               //muestra fecha 
-              consulta = "SELECT ventas.fechaingreso from ventas where idVentas='" + idVenta + "'; ";
+              consulta = "SELECT ventas.fechaingreso from ventas\
+                                 inner join clientes on ventas.idcliente = clientes.idClientes\
+                                 where clientes.NIT = '" + idVenta + "'\
+                                 order by ventas.serie DESC limit 1; ";
               c = consulta.c_str();
               q_estado = mysql_query(cn.getConectar(), c);
               if (!q_estado) {
@@ -543,11 +602,7 @@ public: venta_detalle() {
               }
 
               //muestra cliente
-              consulta = "SELECT clientes.nombres, clientes.apellidos\
-                          from ventas\
-                          inner join clientes\
-                          on ventas.idcliente = clientes.idClientes\
-                          where ventas.idVentas='" + idVenta + "'; ";
+              consulta = "select nombres,apellidos from clientes where NIT = '" + idVenta + "'; ";
               c = consulta.c_str();
               q_estado = mysql_query(cn.getConectar(), c);
               if (!q_estado) {
@@ -562,11 +617,7 @@ public: venta_detalle() {
               }
 
               //muestra nit
-              consulta = "SELECT clientes.NIT\
-                          from ventas\
-                          inner join clientes\
-                          on ventas.idcliente = clientes.idClientes\
-                          where ventas.idVentas='" + idVenta + "'; ";
+              consulta = "select clientes.NIT from clientes where NIT = '" + idVenta + "'; ";
               c = consulta.c_str();
               q_estado = mysql_query(cn.getConectar(), c);
               if (!q_estado) {
@@ -581,20 +632,22 @@ public: venta_detalle() {
               }
               cout << "--------------------------------------------------" << endl;
               cout << '\n';
-              cout << "|        codigo        | cant | precio_U | |Total|" << endl;
+              cout << "|       codigo        | cant | precio_U | |Total|" << endl;
               cout << '\n';
               //muestra compras
-              consulta = "SELECT productos.producto, ventas_detalle.cantidad, ventas_detalle.precio_unitario, cantidad * precio_unitario AS total\
-                          from ventas_detalle\
-                          inner join productos\
-                          on ventas_detalle.idproducto=productos.idProducto\
-                          where ventas_detalle.idVentas ='" + idVenta + "' and productos.existencia>0; ";
+              consulta = "SELECT productos.producto, marcas.marca, ventas_detalle.cantidad, ventas_detalle.precio_unitario, cantidad * precio_unitario AS total\
+                  from ventas\
+                  inner join clientes on clientes.idClientes = ventas.idcliente\
+                  inner join ventas_detalle on ventas_detalle.idVentas = ventas.idVentas\
+                  inner join productos on productos.idProducto = ventas_detalle.idproducto\
+                  inner join marcas on marcas.idMarca = productos.idMarca\
+                  where ventas_detalle.idVentas =(SELECT ventas.idVentas FROM ventas  INNER JOIN clientes ON  ventas.idcliente=clientes.idClientes where clientes.NIT='" + idVenta + "' order by idVentas DESC limit 1); ";
               c = consulta.c_str();
               q_estado = mysql_query(cn.getConectar(), c);
               if (!q_estado) {
                   resultado = mysql_store_result(cn.getConectar());
                   while (fila = mysql_fetch_row(resultado)) {
-                      cout << " " << fila[0] << "             - " << fila[1] << "   -  " << fila[2] << "     -  " << fila[3] << endl;
+                      cout << " " << fila[0] << " " << fila[1] << "       -  " << fila[2] << "     -  " << fila[3] << " - " << fila[4] << endl;
                   }
               }
               else {
@@ -606,7 +659,7 @@ public: venta_detalle() {
                           from ventas_detalle\
                           inner join productos\
                           on ventas_detalle.idproducto = productos.idProducto\
-                          where ventas_detalle.idVentas ='" + idVenta + "' and productos.existencia > 0; ";
+                          where ventas_detalle.idVentas = (SELECT ventas.idVentas FROM ventas  INNER JOIN clientes ON  ventas.idcliente = clientes.idClientes where clientes.NIT ='" + idVenta + "' order by idVentas DESC limit 1) and productos.existencia > 0; ";
               c = consulta.c_str();
               q_estado = mysql_query(cn.getConectar(), c);
               if (!q_estado) {
@@ -627,7 +680,7 @@ public: venta_detalle() {
                           from empleados\
                           inner join ventas\
                           on ventas.idempleado = empleados.idempleado\
-                          where ventas.idVentas ='" + idVenta + "'; ";
+                          where ventas.idVentas = (SELECT ventas.idVentas FROM ventas  INNER JOIN clientes ON  ventas.idcliente = clientes.idClientes where clientes.NIT ='" + idVenta + "' order by idVentas DESC limit 1); ";
               c = consulta.c_str();
               q_estado = mysql_query(cn.getConectar(), c);
               if (!q_estado) {
@@ -641,6 +694,63 @@ public: venta_detalle() {
               else {
                   cout << " xxx Error al obtener el nit xxx" << endl;
               }
+          }
+          else {
+              cout << "Error al leer" << endl;
+              system("pause");
+          }
+          cn.cerrar_conexion();
+      }
+
+      void leerVD() {
+          int q_estado;
+          ConexionBD cn = ConexionBD();
+          MYSQL_ROW fila;
+          MYSQL_RES* resultado;
+          cn.abrir_conexion();
+          if (cn.getConectar()) {
+              cout << '\n';
+              cout << " nombre  marca    cantidad   precio_U  | Total |" << endl;
+              cout << '\n';
+              string consulta = "SELECT productos.producto, marcas.marca, ventas_detalle.cantidad, ventas_detalle.precio_unitario, cantidad* precio_unitario AS total\
+                  from ventas\
+                  inner join clientes on clientes.idClientes = ventas.idcliente\
+                  inner join ventas_detalle on ventas_detalle.idVentas = ventas.idVentas\
+                  inner join productos on productos.idProducto = ventas_detalle.idproducto\
+                  inner join marcas on marcas.idMarca = productos.idMarca\
+              where ventas_detalle.idVentas = (SELECT ventas.idVentas FROM ventas  INNER JOIN clientes ON  ventas.idcliente = clientes.idClientes where clientes.NIT = '" + idVenta + "' order by idVentas DESC limit 1); ";
+              const char* c = consulta.c_str();
+              q_estado = mysql_query(cn.getConectar(), c);
+              if (!q_estado) {
+                  resultado = mysql_store_result(cn.getConectar());
+                  while (fila = mysql_fetch_row(resultado)) {
+                      cout << " " << fila[0] << " " << fila[1] << "        " << fila[2] << "       " << fila[3] << "   " << fila[4] << endl;
+                  }
+
+              }
+              else {
+                  cout << " xxx Error al Consultar  xxx" << endl;
+              }
+
+              consulta = "SELECT sum(cantidad * precio_unitario) AS total_pagar\
+                          from ventas_detalle\
+                          inner join productos\
+                          on ventas_detalle.idproducto = productos.idProducto\
+                          where ventas_detalle.idVentas = (SELECT ventas.idVentas FROM ventas  INNER JOIN clientes ON  ventas.idcliente = clientes.idClientes where clientes.NIT ='" + idVenta + "' order by idVentas DESC limit 1) and productos.existencia > 0; ";
+              c = consulta.c_str();
+              q_estado = mysql_query(cn.getConectar(), c);
+              if (!q_estado) {
+                  resultado = mysql_store_result(cn.getConectar());
+                  while (fila = mysql_fetch_row(resultado)) {
+                      cout << '\n';
+                      cout << "------------------------------ total a pagar: " << "Q" << fila[0] << endl;
+                  }
+
+              }
+              else {
+                  cout << " xxx Error al obtener el nit xxx" << endl;
+              }
+
 
           }
           else {

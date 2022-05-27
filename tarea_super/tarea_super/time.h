@@ -7,7 +7,7 @@ using namespace std;
 
 
 void time() {
-   /* system("cls");
+    system("cls");
     time_t t = time(NULL);
     tm* tPtr = localtime(&t);
     cout << "\n\n mostrando el tiempo y fecha de hoy :\n";
@@ -27,13 +27,13 @@ void time() {
     cout << " fecha actual: " << (tPtr->tm_mday) << "/" << (tPtr->tm_mon) + 1 << "/" << (tPtr->tm_year) + 1900 << endl;
     cout << " hora actual: " << (tPtr->tm_hour) << ":" << (tPtr->tm_min) << ":" << (tPtr->tm_sec) << endl;
     cout << endl;
-    system("pause");*/
+    system("pause");
 
 }
 
-void reloj() {/*
+void reloj() {
     time_t t = time(NULL);
     tm* tPtr = localtime(&t);
     std::cout << "hora: " << (tPtr->tm_hour) << ":" << (tPtr->tm_min) << ":" << (tPtr->tm_sec) << endl;
-    */
+    
 }

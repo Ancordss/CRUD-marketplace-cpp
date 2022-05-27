@@ -11,7 +11,6 @@ using namespace std;
 
 int nofactura = 0;
 void reloj();
-void imprimir(string cant, string pre_uni, string idV, string idP, string v);
 void menu_Venta();
 void crearfactura();
 
@@ -127,77 +126,96 @@ void crearfactura() {
     char continuar = 's';
     do {
         system("cls");
-        /*time_t t = time(NULL);
-        tm* tPtr = localtime(&t);*/
+        time_t t = time(NULL);
+        tm* tPtr = localtime(&t);
         char cont = 's';
         char fax = 's';
         int c;
         int serie = 1;
+        string nt;
         string fechaF, idcl, idemp, fechaI;
-        string cant, pre_uni, idV, idP, v;
+        string cant, pre_uni, idP, v;
         getline(cin, idcl);
-        nofactura++;
-        string noF = to_string(nofactura);
-        cout << "+---------------+" << endl;
-        cout << "nofactura: " << noF << endl; // automatico
-        cout << "+---------------+" << endl;
-        string sr = to_string(serie);
-        cout << "+---------------+" << endl;
-        cout << "serie:" << sr << endl; //automatico
-        cout << "+---------------+" << endl;
-        //cout << " fecha de ingreso "<< (tPtr->tm_hour)<<":"<< (tPtr->tm_min)<<" : "<< (tPtr->tm_sec) <<""<< endl;
+        
 
-        
-        
-        cout << "+---------------------------+" << endl;
-        cout << "|ingrese id del cliente: " << endl; //esto tiene que ser por nit
-        cout << "+---------------------------+" << endl;
-        cout << "-->"; getline(cin, idcl);
         cout << "+---------------------------+" << endl;
         cout << "|ingrese id del empleado: " << endl;
         cout << "+---------------------------+" << endl;
         cout << "-->";  getline(cin, idemp);
 
+
+        cout << "+---------------------------+" << endl;
+        cout << "|ingrese nit del cliente: " << endl; //esto tiene que ser por nit comprobar si existe el nit en la bd
+        cout << "+---------------------------+" << endl;
+        cout << "-->"; getline(cin, idcl);
+        string idV = idcl;
+        Nit r = Nit(idcl);
+        system("cls");
+        r.verificanit();
+        cout << " continuar? s/n:"; cin >> continuar;
+        if (continuar == 'n') break;
+        //cin.ignore();
+        nofactura++;
+        string noF = to_string(nofactura);
+        system("cls");
+
+        cout << " nofactura: " << noF; // automatico
+        cout << "                                       Hora: " << (tPtr->tm_hour) << ":" << (tPtr->tm_min) << " : " << (tPtr->tm_sec) << "" << endl;
+        string sr = to_string(serie);
+        cout << " serie:" << sr; //automatico
+
+       
         Venta u = Venta(noF, sr, fechaF, idcl, idemp, fechaI, v);
         u.crear();
-        u.leeru();
+        u.leerCV();
+       // u.leeru();
         // esto se tiene que pasar automatico
-        cout << "+---------------------------+" << endl;
+      /*  cout << "+---------------------------+" << endl;
         cout << "ingrese el id de la venta: " << endl;
         cout << "+---------------------------+" << endl;
-        cout << "-->"; getline(cin, idV);
+        cout << "-->"; getline(cin, idV);*/
         do {
-            cout << "+---------------------------+" << endl;
-            cout << "ingrese el id del producto: " << endl;
-            cout << "+---------------------------+" << endl;
-            cout << "-->"; getline(cin, idP);               //tiene que mostrar el producto que se ingresa
-            cout << "+---------------------------+" << endl;
-            cout << "ingrese la cantidad: " << endl; 
-            cout << "+---------------------------+" << endl;
-            cout << "-->"; getline(cin, cant);
-            cout << "+---------------------------+" << endl;
-            cout << "ingrese precio_unitario: " << endl; // precio unitario tiene que agarrarse del que ya esta ingresado
-            cout << "+---------------------------+" << endl;
-            cout << "-->"; getline(cin, pre_uni);
 
+            getline(cin, idP);
+
+            cout << " ingrese el id del producto: "; getline(cin, idP);   
+            cout << " ingrese la cantidad:        "; getline(cin, cant);
+            cout << " ingrese precio_unitario:    "; getline(cin, pre_uni);
             venta_detalle a = venta_detalle(cant, pre_uni, idV, idP, v);
             a.crear();
-            cout << "+---------------------------+" << endl;
-            cout << "agregar mas productos ? s/n" << endl;
-            cout << "+---------------------------+" << endl;
-            cout << "-->"; cin >> cont;
+            a.leerVD();
+
+
+            cout << '\n';
+            cout << "agregar mas productos ? s/n "; cin >> cont;
             cin.ignore();
+            system("cls");
         } while (cont == 's');
         nofactura = nofactura + 1;
+        //cout << "" << endl;
+        int segundos = 5;
+        for (int i = 0; i <= 10; i++)//21
+            cout << "\n";
+        cout << "\t\t\t\t CARGANDO... \n";
+        for (int i = 0; i <= 79; i++)//7|9
+            cout << "";
+        for (int i = 0; i <= 79; i++)//79
+        {
+            cout << char(219);
+            Sleep(segundos * 100 / 80);
+        }
+        cout << "\nCompletado!" << endl;
         venta_detalle a = venta_detalle(cant, pre_uni, idV, idP, v);
         a.leer();
-        cout << '\n';
-        cout << "+---------------------------+" << endl;
-        cout << "|desea imprimir la factura (s/n)"<< endl;
-        cout << "+---------------------------+" << endl;
-        cout << "-->"; cin >> fax;
-        cin.ignore();
+
         do{
+            cout << '\n';
+            cout << "+---------------------------+" << endl;
+            cout << "|desea imprimir la factura (s/n)" << endl;
+            cout << "+---------------------------+" << endl;
+            cout << "-->"; cin >> fax;
+            if (fax == 'n') break;
+            cin.ignore();
             system("cls");
             venta_detalle a = venta_detalle(cant, pre_uni, idV, idP, v); 
             a.leerI();
@@ -213,6 +231,7 @@ void crearfactura() {
             cout << "+--------------------------------+" << endl;
             cout << "-->"; cin >> fax;
         } while (fax == 's');
+        freopen("CON", "w", stdout);
         cout << "+---------------------------+" << endl;
         cout << "realizar otra venta? (s/n)" << endl;
         cout << "+---------------------------+" << endl;

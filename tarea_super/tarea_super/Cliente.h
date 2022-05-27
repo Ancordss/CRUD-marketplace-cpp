@@ -163,6 +163,38 @@ public:
 
     }
 
+
+    void leer2() {
+        int q_estado;
+        ConexionBD cn = ConexionBD();
+        MYSQL_ROW fila;
+        MYSQL_RES* resultado;
+        cn.abrir_conexion();
+        if (cn.getConectar()) {
+            string consulta = "select nombres, apellidos\
+                               from clientes where NIT = '" + nit + "';";
+            const char* c = consulta.c_str();
+            q_estado = mysql_query(cn.getConectar(), c);
+            if (!q_estado) {
+                resultado = mysql_store_result(cn.getConectar());
+                while (fila = mysql_fetch_row(resultado)) {
+                    cout << "cliente: " << fila[0] << "," << fila[1] << endl;
+                }
+
+            }
+            else {
+                cout << " xxx Error al Consultar  xxx" << endl;
+            }
+
+        }
+        else {
+            cout << "Error al leer" << endl;
+            system("pause");
+        }
+        cn.cerrar_conexion();
+    }
+
+
 };
 
 class Nit {
@@ -217,10 +249,10 @@ public:
         }
 
         if (dcorrecto == (digito - '0')) {
-            cout << "\nEl nit está correcto!" << endl;
+            cout << "\n El nit está correcto!" << endl;
         }
         else {
-            cout << "\nnit está incorrecto! " << endl;
+            cout << "\n El nit está incorrecto porfavor registralo! " << endl;
         }
     }
 };

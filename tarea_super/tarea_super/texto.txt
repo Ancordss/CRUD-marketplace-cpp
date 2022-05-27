@@ -1,19 +1,17 @@
 -----------------Factura generada-----------------
 --------------------------------------------------
 --------------------------------------------------
- serie: 1
+ serie: A
  No de Factura: 1
- Fecha/hora: 2022-05-26 18:22:42
+ Fecha/hora: 2022-05-26 22:10:31
  Cliente: hector maradiaga
  NIT: 283192-2
 --------------------------------------------------
 
 |        codigo        | cant | precio_U | |Total|
 
- danoninos             - 23   -  43.00     -  989
- danoninos             - 3   -  43.00     -  129
- danoninos             - 43   -  54.00     -  2322
------------------------------- total a pagar: Q3440
+ danoninos nestle       -  2     -  23.00 - 46
+------------------------------ total a pagar: Q46
 
 atendido por: carlos ssdsdds
 
