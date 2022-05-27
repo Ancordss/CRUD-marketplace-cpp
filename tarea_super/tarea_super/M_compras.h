@@ -132,6 +132,7 @@ void borrarCompra()
 
 void crearcomprobante() {
     char continuar = 's';
+    char fax = 's';
     do {
         system("cls");
         /*time_t t = time(NULL);
@@ -193,15 +194,36 @@ void crearcomprobante() {
             cin.ignore();
 
         } while (cont == 's');
-
         Compra_detalle cd = Compra_detalle(idCompra, idProducto, canitdad, precio_costo_unitario, varDcom);
         cd.leer();
+        cout << '\n';
+        cout << "+---------------------------+" << endl;
+        cout << "|desea imprimir la factura (s/n)" << endl;
+        cout << "+---------------------------+" << endl;
+        cout << "-->"; cin >> fax;
+        cin.ignore();
+        do {
+            system("cls");
+            Compra_detalle cd = Compra_detalle(idCompra, idProducto, canitdad, precio_costo_unitario, varDcom);
+            cd.leer2();
+            fclose(stdout);
+            fflush(stdout);
+            //imp();
+            system("start C:\\tools\\imp\\imp.exe");
+            freopen("CON", "w", stdout);
+            cout << "+--------------------------------+" << endl;
+            cout << "| impresion realizada con exito! |" << endl;
+            cout << "+--------------------------------+" << endl;
+            cout << "| para regresar presiona (n)     |" << endl;
+            cout << "+--------------------------------+" << endl;
+            cout << "-->"; cin >> fax;
+        } while (fax == 's');
         cout << "+---------------------------+" << endl;
         cout << "realizar otra compra? s/n" << endl;
         cout << "+---------------------------+" << endl;
-        cout << "-->"; cin >> cont;
+        cout << "-->"; cin >> continuar;
         cin.ignore();
-    } while (continuar == 's')
+    } while (continuar == 's');
 }
 
 void leerBoleto() {

@@ -2,6 +2,11 @@
 #include <iostream>
 #include <string>
 #include "ConexionDB.h"
+#include <stdio.h>
+#include <conio.h>
+#include <fstream>
+
+
 
 class Venta
 {
@@ -375,9 +380,6 @@ public: venta_detalle() {
               else {
                   cout << " xxx Error al obtener el nit xxx" << endl;
               }
-
-
-              system("pause");
           }
           else {
               cout << "Error al leer" << endl;
@@ -409,12 +411,12 @@ public: venta_detalle() {
                       cout << char(219);
                       Sleep(segundos * 100 / 80);
                   }
-                  cout << "\nCompletado!";
+                  cout << "\nCompletado!" << endl;
               }
               else {
                   cout << "error al insertar" << endl;
               }
-
+              system("cls");
           }
           else {
               cout << "Error al leer" << endl;
@@ -478,8 +480,177 @@ public: venta_detalle() {
           cn.cerrar_conexion();
       }
 
-};
+      void leerI() {
+          int q_estado;
+          ConexionBD cn = ConexionBD();
+          MYSQL_ROW fila;
+          MYSQL_RES* resultado;
+          cn.abrir_conexion();
+          if (cn.getConectar()) {
+              //system("cls");
+              //char s;
+              //copia la salida a el archivo texto.txt
+              freopen("texto.txt", "w", stdout);
+             
+              //stream = freopen("texto.txt", "w", stderr);
+              //s = _getch();
+              //
+              cout << "-----------------Factura generada-----------------" << endl;
+              cout << "--------------------------------------------------" << endl;
+              cout << "--------------------------------------------------" << endl;
+              string consulta = "SELECT ventas.serie from ventas where idVentas='" + idVenta + "'; ";
+              const char* c = consulta.c_str();
+              q_estado = mysql_query(cn.getConectar(), c);
+              if (!q_estado) {
+                  resultado = mysql_store_result(cn.getConectar());
+                  while (fila = mysql_fetch_row(resultado)) {
+                      cout << " serie: " << fila[0] << endl;
+                  }
 
+              }
+              else {
+                  cout << " xxx Error al resolver el no de serie   xxx" << endl;
+              }
+
+              //no factura manda a mostrar 
+              consulta = "SELECT ventas.nofactura from ventas where idVentas='" + idVenta + "'; ";
+              c = consulta.c_str();
+              q_estado = mysql_query(cn.getConectar(), c);
+              if (!q_estado) {
+                  resultado = mysql_store_result(cn.getConectar());
+                  while (fila = mysql_fetch_row(resultado)) {
+                      cout << " No de Factura: " << fila[0] << endl;
+                  }
+
+              }
+              else {
+                  cout << " xxx Error al resover el numero de factura  xxx" << endl;
+              }
+
+              //muestra fecha 
+              consulta = "SELECT ventas.fechaingreso from ventas where idVentas='" + idVenta + "'; ";
+              c = consulta.c_str();
+              q_estado = mysql_query(cn.getConectar(), c);
+              if (!q_estado) {
+                  resultado = mysql_store_result(cn.getConectar());
+                  while (fila = mysql_fetch_row(resultado)) {
+                      cout << " Fecha/hora: " << fila[0] << endl;
+                  }
+
+              }
+              else {
+                  cout << " xxx Error al mostrar la fecha  xxx" << endl;
+              }
+
+              //muestra cliente
+              consulta = "SELECT clientes.nombres, clientes.apellidos\
+                          from ventas\
+                          inner join clientes\
+                          on ventas.idcliente = clientes.idClientes\
+                          where ventas.idVentas='" + idVenta + "'; ";
+              c = consulta.c_str();
+              q_estado = mysql_query(cn.getConectar(), c);
+              if (!q_estado) {
+                  resultado = mysql_store_result(cn.getConectar());
+                  while (fila = mysql_fetch_row(resultado)) {
+                      cout << " Cliente: " << fila[0] << " " << fila[1] << endl;
+                  }
+
+              }
+              else {
+                  cout << " xxx Error al obtener nombre de cliente  xxx" << endl;
+              }
+
+              //muestra nit
+              consulta = "SELECT clientes.NIT\
+                          from ventas\
+                          inner join clientes\
+                          on ventas.idcliente = clientes.idClientes\
+                          where ventas.idVentas='" + idVenta + "'; ";
+              c = consulta.c_str();
+              q_estado = mysql_query(cn.getConectar(), c);
+              if (!q_estado) {
+                  resultado = mysql_store_result(cn.getConectar());
+                  while (fila = mysql_fetch_row(resultado)) {
+                      cout << " NIT: " << fila[0] << endl;
+                  }
+
+              }
+              else {
+                  cout << " xxx Error al obtener el nit xxx" << endl;
+              }
+              cout << "--------------------------------------------------" << endl;
+              cout << '\n';
+              cout << "|        codigo        | cant | precio_U | |Total|" << endl;
+              cout << '\n';
+              //muestra compras
+              consulta = "SELECT productos.producto, ventas_detalle.cantidad, ventas_detalle.precio_unitario, cantidad * precio_unitario AS total\
+                          from ventas_detalle\
+                          inner join productos\
+                          on ventas_detalle.idproducto=productos.idProducto\
+                          where ventas_detalle.idVentas ='" + idVenta + "' and productos.existencia>0; ";
+              c = consulta.c_str();
+              q_estado = mysql_query(cn.getConectar(), c);
+              if (!q_estado) {
+                  resultado = mysql_store_result(cn.getConectar());
+                  while (fila = mysql_fetch_row(resultado)) {
+                      cout << " " << fila[0] << "             - " << fila[1] << "   -  " << fila[2] << "     -  " << fila[3] << endl;
+                  }
+              }
+              else {
+                  cout << " xxx Error al obtener las compras xxx" << endl;
+              }
+
+              //muestra total a pagar
+              consulta = "SELECT sum(cantidad * precio_unitario) AS total_pagar\
+                          from ventas_detalle\
+                          inner join productos\
+                          on ventas_detalle.idproducto = productos.idProducto\
+                          where ventas_detalle.idVentas ='" + idVenta + "' and productos.existencia > 0; ";
+              c = consulta.c_str();
+              q_estado = mysql_query(cn.getConectar(), c);
+              if (!q_estado) {
+                  resultado = mysql_store_result(cn.getConectar());
+                  while (fila = mysql_fetch_row(resultado)) {
+                      cout << "------------------------------ total a pagar: " << "Q" << fila[0] << endl;
+                  }
+
+              }
+              else {
+                  cout << " xxx Error al obtener el nit xxx" << endl;
+              }
+
+
+              //muestra atendido por 
+              cout << '\n';
+              consulta = "SELECT empleados.nombres, empleados.apellidos\
+                          from empleados\
+                          inner join ventas\
+                          on ventas.idempleado = empleados.idempleado\
+                          where ventas.idVentas ='" + idVenta + "'; ";
+              c = consulta.c_str();
+              q_estado = mysql_query(cn.getConectar(), c);
+              if (!q_estado) {
+                  resultado = mysql_store_result(cn.getConectar());
+                  while (fila = mysql_fetch_row(resultado)) {
+                      cout << "atendido por: " << fila[0] << " " << fila[1] << endl;
+                      cout << '\n';
+                  }
+
+              }
+              else {
+                  cout << " xxx Error al obtener el nit xxx" << endl;
+              }
+
+          }
+          else {
+              cout << "Error al leer" << endl;
+              system("pause");
+          }
+          cn.cerrar_conexion();
+      }
+
+};
 
 
 

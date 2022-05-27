@@ -3,15 +3,21 @@
 #include "Venta.h"
 #include "time.h"
 #include <iostream>
+#include "impresion.h"
+#define _CRT_SECURE_NO_DEPRECATE
 using namespace std;
 
-void reloj();
 
+
+int nofactura = 0;
+void reloj();
+void imprimir(string cant, string pre_uni, string idV, string idP, string v);
 void menu_Venta();
 void crearfactura();
 
 void crear_venta();
 void leer_venta();
+
 void actualizar_venta();
 void borrar_venta();
 
@@ -117,13 +123,14 @@ void borrar_venta() {
 }
 
 void crearfactura() {
-    int nofactura = 0;
+    
     char continuar = 's';
     do {
         system("cls");
         /*time_t t = time(NULL);
         tm* tPtr = localtime(&t);*/
         char cont = 's';
+        char fax = 's';
         int c;
         int serie = 1;
         string fechaF, idcl, idemp, fechaI;
@@ -131,11 +138,13 @@ void crearfactura() {
         getline(cin, idcl);
         nofactura++;
         string noF = to_string(nofactura);
+        cout << "+---------------+" << endl;
         cout << "nofactura: " << noF << endl; // automatico
-
+        cout << "+---------------+" << endl;
         string sr = to_string(serie);
+        cout << "+---------------+" << endl;
         cout << "serie:" << sr << endl; //automatico
-
+        cout << "+---------------+" << endl;
         //cout << " fecha de ingreso "<< (tPtr->tm_hour)<<":"<< (tPtr->tm_min)<<" : "<< (tPtr->tm_sec) <<""<< endl;
 
         
@@ -174,20 +183,65 @@ void crearfactura() {
             venta_detalle a = venta_detalle(cant, pre_uni, idV, idP, v);
             a.crear();
             cout << "+---------------------------+" << endl;
-            cout << "agregar mas productos ? s/n";
+            cout << "agregar mas productos ? s/n" << endl;
             cout << "+---------------------------+" << endl;
             cout << "-->"; cin >> cont;
             cin.ignore();
         } while (cont == 's');
         nofactura = nofactura + 1;
-
         venta_detalle a = venta_detalle(cant, pre_uni, idV, idP, v);
         a.leer();
+        cout << '\n';
+        cout << "+---------------------------+" << endl;
+        cout << "|desea imprimir la factura (s/n)"<< endl;
+        cout << "+---------------------------+" << endl;
+        cout << "-->"; cin >> fax;
+        cin.ignore();
+        do{
+            system("cls");
+            venta_detalle a = venta_detalle(cant, pre_uni, idV, idP, v); 
+            a.leerI();
+            fclose(stdout);
+            fflush(stdout);
+            //imp();
+            system("start C:\\tools\\imp\\imp.exe");
+            freopen("CON", "w", stdout);
+            cout << "+--------------------------------+" << endl;
+            cout << "| impresion realizada con exito! |" << endl;
+            cout << "+--------------------------------+" << endl;
+            cout << "| para regresar presiona (n)     |" << endl;
+            cout << "+--------------------------------+" << endl;
+            cout << "-->"; cin >> fax;
+        } while (fax == 's');
         cout << "+---------------------------+" << endl;
         cout << "realizar otra venta? (s/n)" << endl;
         cout << "+---------------------------+" << endl;
         cout << "-->"; cin >> continuar;
         cin.ignore();
     } while (continuar== 's');
+    nofactura = nofactura;
 
 }
+/*
+void imprimir(string cant, string pre_uni, string idV, string idP, string v) {
+   freopen("texto.txt", "w", stdout);
+    venta_detalle a = venta_detalle(cant, pre_uni, idV, idP, v);
+    a.leer();
+    fflush(stdout);
+    fclose(stdout);
+
+   //Reassign "stderr" to "freopen.out":
+    //stream = freopen("texto.txt", "w", stderr); // C4996
+    // Note: freopen is deprecated; consider using freopen_s instead
+
+    if (stream == NULL)
+        fprintf(stdout, "error on freopen\n");
+    else
+    {
+        fprintf(stdout, "successfully reassigned\n"); fflush(stdout);
+        fprintf(stream, "This will go to the file 'freopen.out'\n");
+        fclose(stream);
+    }
+    system("type freopen.out");
+   
+} */

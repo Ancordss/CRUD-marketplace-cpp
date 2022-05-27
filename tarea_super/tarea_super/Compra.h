@@ -150,12 +150,8 @@ public: Compra() {}
 		  cn.abrir_conexion();
 		  if (cn.getConectar()) {
 			  cout << "------------ id de la venta ------------" << endl;
-			  string consulta = "select idCompra,\
-                                CASE\
-                                WHEN  no_orden_compra = '" + no_orden_compra + "' then '" + no_orden_compra + "'\
-                                ELSE 'error'\
-                                end as ID\
-                                From ventas;";
+			  string consulta = "select idCompra from ventas\
+                                WHERE  no_orden_compra = '" + no_orden_compra + "';";
 			  const char* c = consulta.c_str();
 			  q_estado = mysql_query(cn.getConectar(), c);
 			  if (!q_estado) {
@@ -432,7 +428,150 @@ public: Compra_detalle() {}
 		  cn.cerrar_conexion();
 	  }
 
+	  void leer2() {
 
+		  int q_estado;
+		  ConexionBD cn = ConexionBD();
+		  MYSQL_ROW fila;
+		  MYSQL_RES* resultado;
+		  cn.abrir_conexion();
+		  if (cn.getConectar()) {
+
+			  freopen("texto.txt", "w", stdout);
+
+			  system("cls");
+			  cout << "***************************COMPROBANTE GENERADO**************************" << endl;
+			  cout << "*************************************************************************" << endl;
+			  cout << "*************************************************************************" << endl;
+			  string consulta = "SELECT compras.no_orden_compra from compras where idCompra = '" + idCompra + "'; ";
+			  const char* c = consulta.c_str();
+			  q_estado = mysql_query(cn.getConectar(), c);
+			  if (!q_estado) {
+				  resultado = mysql_store_result(cn.getConectar());
+				  while (fila = mysql_fetch_row(resultado)) {
+					  cout << "No. de orden de compra: " << fila[0] << endl;
+				  }
+			  }
+			  else {
+				  cout << "Error en la consulta: " << endl;
+			  }
+
+			  // mostrar proveedor
+			  consulta = "SELECT proveedores.proveedor, proveedores.telefono\
+				        FROM proveedores\
+                        INNER JOIN compras\
+						ON compras.idProveedor = proveedores.idProveedor\
+				        WHERE compras.idCompra = '" + idCompra + "'; ";
+
+			  c = consulta.c_str();
+			  q_estado = mysql_query(cn.getConectar(), c);
+			  if (!q_estado) {
+				  resultado = mysql_store_result(cn.getConectar());
+				  while (fila = mysql_fetch_row(resultado)) {
+					  cout << "Proveedor: " << fila[0] << " " << fila[1] << endl;
+				  }
+			  }
+			  else {
+				  cout << "Error en la consulta: " << endl;
+			  }
+
+			  // mostrar fecha 
+
+			  consulta = "SELECT compras.fecha_orden from compras where idCompra = '" + idCompra + "'; ";
+			  c = consulta.c_str();
+			  q_estado = mysql_query(cn.getConectar(), c);
+			  if (!q_estado) {
+				  resultado = mysql_store_result(cn.getConectar());
+				  while (fila = mysql_fetch_row(resultado)) {
+					  cout << "Fecha de orden de compra: " << fila[0] << endl;
+				  }
+			  }
+			  else {
+				  cout << "Error en la consulta: " << endl;
+			  }
+
+			  // fecha del ingrreso 
+
+			  consulta = "SELECT compras.fechaingreso from compras where idCompra = '" + idCompra + "'; ";
+			  c = consulta.c_str();
+			  q_estado = mysql_query(cn.getConectar(), c);
+			  if (!q_estado) {
+				  resultado = mysql_store_result(cn.getConectar());
+				  while (fila = mysql_fetch_row(resultado)) {
+					  cout << "Fecha de ingreso: " << fila[0] << endl;
+				  }
+			  }
+			  else {
+				  cout << "Error en la consulta o no : " << endl;
+			  }
+
+
+
+			  // mostrar nit 
+
+			  consulta = "SELECT proveedores.nit\
+						from proveedores\
+				        INNER JOIN compras\
+						ON compras.idProveedor = proveedores.idProveedor\
+				        WHERE compras.idCompra = '" + idCompra + "'; ";
+			  c = consulta.c_str();
+			  q_estado = mysql_query(cn.getConectar(), c);
+			  if (!q_estado) {
+				  resultado = mysql_store_result(cn.getConectar());
+				  while (fila = mysql_fetch_row(resultado)) {
+					  cout << "Nit: " << fila[0] << endl;
+				  }
+			  }
+			  else {
+				  cout << "Error en la consulta: " << endl;
+			  }
+
+			  cout << "*************************************************************************" << endl;
+			  cout << '\n';
+			  cout << "|   producto Adquirido   | Cantidad | Precio costo unitario | Total | " << endl;
+
+			  //mostrar adquisicion
+
+			  consulta = "SELECT productos.producto, compras_detalle.canitdad, compras_detalle.precio_costo_unitario, canitdad * precio_costo_unitario AS total\
+						from compras_detalle\
+                        INNER JOIN productos\
+                        ON compras_detalle.idProducto = productos.idProducto\
+                        WHERE compras_detalle.idCompra = '" + idCompra + "' and productos.existencia>0; ";
+			  c = consulta.c_str();
+			  q_estado = mysql_query(cn.getConectar(), c);
+			  if (!q_estado) {
+				  resultado = mysql_store_result(cn.getConectar());
+				  while (fila = mysql_fetch_row(resultado)) {
+					  cout << "      " << fila[0] << "               - " << fila[1] << "         - " << fila[2] << "              - " << fila[3] << endl;
+				  }
+			  }
+			  else {
+				  cout << "Error en la consulta xxxxxxxx " << endl;
+			  }
+
+			  // mostrar total
+
+			  consulta = "SELECT SUM(canitdad * precio_costo_unitario) AS total_pagar\
+						from compras_detalle\
+						INNER JOIN productos\
+						ON compras_detalle.idProducto = productos.idProducto\
+						WHERE compras_detalle.idCompra = '" + idCompra + "' and compras_detalle.idProducto > 0; ";
+			  c = consulta.c_str();
+			  q_estado = mysql_query(cn.getConectar(), c);
+			  if (!q_estado) {
+				  resultado = mysql_store_result(cn.getConectar());
+				  while (fila = mysql_fetch_row(resultado)) {
+					  cout << " * ***********************************************total a pagar : " << "Q." << fila[0] << endl;
+
+				  }
+			  }
+			  else {
+				  cout << "Error en la consultaaaaaaaaaaaaa: " << endl;
+			  }
+
+
+		  }
+	  }
 
 
 };

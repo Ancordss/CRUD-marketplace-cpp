@@ -123,6 +123,7 @@ void Madmin() {
         SetConsoleTextAttribute (hConsole, 3); cout << "|      administra proveedores         (3)  |" << endl;
         SetConsoleTextAttribute (hConsole, 3); cout << "|      Realizar comprar a proveedores (4)  |" << endl;
         SetConsoleTextAttribute (hConsole, 3); cout << "|      mostrar opciones de empleados  (5)  |" << endl;
+        SetConsoleTextAttribute(hConsole, 3); cout <<  "|      regresar                       (6)  |" << endl;
         SetConsoleTextAttribute (hConsole, 3); cout << "|      para salir presiona            (0)  |" << endl;
         SetConsoleTextAttribute (hConsole, 1); cout << "+------------------------------------------+" << endl;
         cout << "-->"; cin >> switch_on;
@@ -133,7 +134,7 @@ void Madmin() {
 		case 3: system("cls"); M_proveedor(); break;
         case 4: system("cls"); crearcomprobante(); break; //M_compras(); break;
         case 5: system("cls"); M_empleado(); break;
-
+        case 6: system("cls"); menuUser(); break;
 
         case 0: exit(-1);
 
