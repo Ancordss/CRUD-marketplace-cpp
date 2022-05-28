@@ -17,6 +17,7 @@
 #include "M_compras.h"
 #include "Producto.h"
 #include <windows.h>
+#include "SerialPort.h"
 using namespace std;
 
 /*menu principal*/
@@ -72,6 +73,13 @@ void crearC();
 void borrarC();
 void actualizarC();
 void leerC();
+
+int M_arduino();
+
+char output[MAX_DATA_LENGTH];
+char port[] = " ////.//COM5";
+char incoming[MAX_DATA_LENGTH];
+
 
 void menuUser() { 
        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE) ;
@@ -158,6 +166,7 @@ void M_empleado() {
         SetConsoleTextAttribute (hConsole,15);cout << "|     gestionar Producto      (2)  |" << endl;
         SetConsoleTextAttribute (hConsole,15);cout << "|     registra Cliente        (3)  |" << endl;
         SetConsoleTextAttribute(hConsole, 15);cout << "|     regresar al menu        (4)  |" << endl;
+		SetConsoleTextAttribute (hConsole,15);cout << "|     PRUEBA ARDUINO          (5)  |" << endl;
         SetConsoleTextAttribute (hConsole,15);cout << "|     para salir presiona     (0)  |" << endl;
         SetConsoleTextAttribute (hConsole, 4);cout << "+----------------------------------+" << endl;
         cout << "-->"; cin >> switch_on;
@@ -167,6 +176,7 @@ void M_empleado() {
         case 2: system("cls"); subM_Producto(); break;
         case 3: system("cls"); menu_clientes(); break;
         case 4: system("cls"); menuUser(); break;
+        case 5: system("cls"); M_arduino(); break;
 
         case 0: exit(-1); break;
 
@@ -886,3 +896,37 @@ void borrarProd() {
 	system ("cls");
 
 }
+
+
+
+
+    int M_arduino() {
+        //
+        SerialPort arduino(port);
+        if (arduino.isConnected())
+        {
+            cout << "Connected to Arduino" << endl;
+        }
+        else
+        {
+            cout << "Failed to connect to Arduino" << endl;
+        }
+        while (arduino.isConnected())
+        {
+            cout << "precione 1 para arrastar producto despacio o 2 para arrastar producto rapido" << endl;
+            string command;
+            cin >> command;
+            char* charArray = new char[command.size() + 1];
+            copy(command.begin(), command.end(), charArray);
+            charArray[command.size()] = '\n';
+
+            arduino.writeSerialPort(charArray, MAX_DATA_LENGTH);
+            arduino.readSerialPort(output, MAX_DATA_LENGTH);
+
+            cout << output << endl;
+
+            delete[] charArray;
+
+        }
+        return 0;
+    }

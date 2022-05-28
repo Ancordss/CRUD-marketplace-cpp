@@ -148,6 +148,7 @@
     <ClCompile Include="Producto.cpp" />
     <ClCompile Include="Marca.cpp" />
     <ClCompile Include="Proveedor.cpp" />
+    <ClCompile Include="SerialPort.cpp" />
     <ClCompile Include="tarea_super.cpp" />
     <ClCompile Include="venta.cpp" />
   </ItemGroup>
@@ -157,6 +158,7 @@
     <ClInclude Include="ConexionDB.h" />
     <ClInclude Include="impresion.h" />
     <ClInclude Include="M_compras.h" />
+    <ClInclude Include="SerialPort.h" />
     <ClInclude Include="time.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="M_ventas.h" />
@@ -168,6 +170,9 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="tarea_super.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="progra.ino" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
