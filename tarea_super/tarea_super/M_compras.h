@@ -134,37 +134,43 @@ void crearcomprobante() {
     char continuar = 's';
     char fax = 's';
     do {
-        system("cls");
-        /*time_t t = time(NULL);
-        tm* tPtr = localtime(&t);*/
-        char cont = 's';
+		system ("cls");
+		char cont = 's';
         int no_orden_compra;
+        int c;
         string  idproveedor, fecha_orden, fechaingreso, varcom;
         string  idCompra, idProducto, canitdad, precio_costo_unitario, varDcom;
 
-        int num, c;
+        int num, ct;
         srand(time(NULL));
 
-        for (c = 1; c <= 10; c++)
+        for (ct = 1; ct <= 10; ct++)
         {
             num = 1 + rand() % (501 - 1);
         }
         no_orden_compra = num;
         num = no_orden_compra;
         string no_ord = to_string(no_orden_compra);
+		
         cout << "+---------------------------+" << endl;
-        cout << " No. Orden de Compra: " << no_ord << endl; // numero de orden de compra aleatorio 
-        cout << "+---------------------------+" << endl;
-
-        getline(cin, idproveedor);
-        cout << "+---------------------------+" << endl;
-        cout << " Id Proveedor:   " << endl;
-        cout << "+---------------------------+" << endl;
-        cout << "-->"; getline(cin, idproveedor);
-
+        cout << " No. Orden de Compra: " << no_ord << endl;
+		cout << "+---------------------------+" << endl;
+		
+		getline (cin, idproveedor );
+        cout << "+------------------------------+" << endl;
+        cout << "|  ingrese nit del proveedor:  |" << endl;
+		cout << "+------------------------------+" << endl;
+        cout << "-->"; getline (cin, idproveedor );
+		
+		string idv = idproveedor;
+        Nit r = Nit(idproveedor);
+        system("cls");
+        r.verificanit();
+		cout <<" continuar con la compra? s/n" << endl;
+        if (continuar == 'n') break;
+		
         Compra co = Compra(no_ord, idproveedor, fecha_orden, fechaingreso, varcom);
         co.crear();
-        co.leer();
 
         cout << "+---------------------------+" << endl;
         cout << "Ingrese el id de la compra para comprobar " << endl;

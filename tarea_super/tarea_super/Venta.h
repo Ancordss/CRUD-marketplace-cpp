@@ -271,6 +271,7 @@ public: venta_detalle() {
 
 }
       venta_detalle(string cant, string pre_uni, string idV, string idP,string v) {
+         
           cantidad = cant;
           precio_unitario = pre_uni;
           idVenta = idV;

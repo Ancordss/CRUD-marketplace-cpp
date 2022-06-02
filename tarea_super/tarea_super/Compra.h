@@ -2,6 +2,10 @@
 #include <iostream>
 #include <string>
 #include "ConexionDB.h"
+#include <stdio.h>
+#include <conio.h>
+#include <fstream>
+#include "Proveedor.h"
 
 using namespace std;
 
@@ -142,36 +146,68 @@ public: Compra() {}
 		  cn.cerrar_conexion();
 	  }
 
-	  void leeru() {
-		  int q_estado;
-		  ConexionBD cn = ConexionBD();
-		  MYSQL_ROW fila;
-		  MYSQL_RES* resultado;
-		  cn.abrir_conexion();
-		  if (cn.getConectar()) {
-			  cout << "------------ id de la venta ------------" << endl;
-			  string consulta = "select idCompra from ventas\
-                                WHERE  no_orden_compra = '" + no_orden_compra + "';";
+		void leerCv1() {
+			int q_estado = 0;
+			ConexionBD cn = ConexionBD();
+			MYSQL_ROW fila;
+			MYSQL_RES* resultado;
+			cn.abrir_conexion();
+			if (cn.getConectar()) {
+
+				cout << endl;
+
+			  string consulta = "select proveedor\
+								 from proveedores where nit = '" + idproveedor + "';";
 			  const char* c = consulta.c_str();
 			  q_estado = mysql_query(cn.getConectar(), c);
 			  if (!q_estado) {
 				  resultado = mysql_store_result(cn.getConectar());
 				  while (fila = mysql_fetch_row(resultado)) {
-					  cout << fila[0] << endl;
+					  cout << "Proveedor: " << fila[0]  << endl;
 				  }
-
 			  }
 			  else {
-				  cout << " xxx Error al Consultar  xxx" << endl;
+				  cout << "Error al consultar" << endl;
 			  }
 
-		  }
+			  consulta = "select nit\
+								  from proveedores where nit = '" + idproveedor + "';";
+			  c = consulta.c_str();
+			  q_estado = mysql_query(cn.getConectar(), c);
+			  if (!q_estado) {
+					  resultado = mysql_store_result(cn.getConectar());
+				  while (fila = mysql_fetch_row(resultado)) {
+					  cout << "NIT: " << fila[0] << endl;
+				  }
+			  }
+			  else {
+				  cout << "Error al consultar" << endl;
+			  }
+
+			  consulta = "select telefono\
+					  from proveedores where nit = '" + idproveedor + "';";
+			  c = consulta.c_str();
+			  q_estado = mysql_query(cn.getConectar(), c);
+			  if (!q_estado) {
+				  resultado = mysql_store_result(cn.getConectar());
+				  while (fila = mysql_fetch_row(resultado)) {
+					  cout << " Telefono: " << fila[0] << endl;
+				  }
+			  }
+			  else {
+				  cout << "Error al consultar" << endl;
+			  }
+
+			  cout << "--------------------------------------------------------------------------------------------------------------------------------------------" << endl;
+
+			}
 		  else {
-			  cout << "Error al leer" << endl;
-			  system("pause");
-		  }
+				cout << "Error al leer" << endl;
+				system("pause");
+			}
 		  cn.cerrar_conexion();
-	  }
+
+		}
 
 
 };
@@ -225,7 +261,12 @@ public: Compra_detalle() {}
 			  cout << "***************************COMPROBANTE GENERADO**************************" << endl;
 			  cout << "*************************************************************************" << endl;
 			  cout << "*************************************************************************" << endl;
-			  string consulta = "SELECT compras.no_orden_compra from compras where idCompra = '" + idCompra + "'; ";
+
+			  string consulta = "SELECT compras.no_orden_compra from compras\
+								inner join proveedores on compras.idProveedor = proveedores.idProveedor\
+								where proveedores.nit = '" + idCompra + "'\
+								order by compras.no_orden_compra desc limit 1;";
+
 			  const char* c = consulta.c_str();
 			  q_estado = mysql_query(cn.getConectar(), c);
 			  if (!q_estado) {
@@ -238,13 +279,68 @@ public: Compra_detalle() {}
 				  cout << "Error en la consulta: " << endl;
 			  }
 
-			  // mostrar proveedor
-			  consulta = "SELECT proveedores.proveedor, proveedores.telefono\
-				        FROM proveedores\
-                        INNER JOIN compras\
-						ON compras.idProveedor = proveedores.idProveedor\
-				        WHERE compras.idCompra = '" + idCompra + "'; ";
 
+			  // no orden de compra manda a mostrar 
+
+			  consulta = "SELECT compras.no_orden_compra from compras\
+						inner join proveedores on compras.idProveedor = proveedores.idProveedor\
+						where proveedores.nit = '" + idCompra + "'\
+						order by compras.no_orden_compra desc limit 1;";
+
+
+			  c = consulta.c_str();
+			  q_estado = mysql_query(cn.getConectar(), c);
+			  if (!q_estado) {
+				  resultado = mysql_store_result(cn.getConectar());
+				  while (fila = mysql_fetch_row(resultado)) {
+					  cout << "No. de orden de compra: " << fila[0] << endl;
+				  }
+			  }
+			  else {
+				  cout << "Error en la consulta: " << endl;
+			  }
+
+			  // feche de la orden 
+
+			  consulta = "SELECT compras.fecha_orden from compras\
+						inner join proveedores on compras.idProveedor = proveedores.idProveedor\
+						where proveedores.nit = '" + idCompra + "'\
+						order by compras.no_orden_compra desc limit 1;";
+
+
+			  c = consulta.c_str();
+			  q_estado = mysql_query(cn.getConectar(), c);
+			  if (!q_estado) {
+				  resultado = mysql_store_result(cn.getConectar());
+				  while (fila = mysql_fetch_row(resultado)) {
+					  cout << "Fecha de la orden: " << fila[0] << endl;
+				  }
+			  }
+			  else {
+				  cout << "Error en la consulta: " << endl;
+			  }
+
+			  // mostrar fecha de ingreso 
+
+			  consulta = "SELECT compras.fechaingreso from compras\
+						inner join proveedores on compras.idProveedor = proveedores.idProveedor\
+						where proveedores.nit = '" + idCompra + "'\
+						order by compras.no_orden_compra desc limit 1; ";
+			  c = consulta.c_str();
+			  q_estado = mysql_query(cn.getConectar(), c);
+			  if (!q_estado) {
+				  resultado = mysql_store_result(cn.getConectar());
+				  while (fila = mysql_fetch_row(resultado)) {
+					  cout << "Fecha de ingreso estipulado: " << fila[0] << endl;
+				  }
+			  }
+			  else {
+				  cout << "Error en la consulta: " << endl;
+			  }
+
+
+			  // mostrar proveedor
+			  consulta = "SELECT proveedor, telefono from proveedores where nit = '" + idCompra + "';";
 			  c = consulta.c_str();
 			  q_estado = mysql_query(cn.getConectar(), c);
 			  if (!q_estado) {
@@ -257,45 +353,10 @@ public: Compra_detalle() {}
 				  cout << "Error en la consulta: " << endl;
 			  }
 
-			  // mostrar fecha 
-
-			  consulta = "SELECT compras.fecha_orden from compras where idCompra = '" + idCompra + "'; ";
-			  c = consulta.c_str();
-			  q_estado = mysql_query(cn.getConectar(), c);
-			  if (!q_estado) {
-				  resultado = mysql_store_result(cn.getConectar());
-				  while (fila = mysql_fetch_row(resultado)) {
-					  cout << "Fecha de orden de compra: " << fila[0] << endl;
-				  }
-			  }
-			  else {
-				  cout << "Error en la consulta: " << endl;
-			  }
-
-			  // fecha del ingrreso 
-
-			  consulta = "SELECT compras.fechaingreso from compras where idCompra = '" + idCompra + "'; ";
-			  c = consulta.c_str();
-			  q_estado = mysql_query(cn.getConectar(), c);
-			  if (!q_estado) {
-				  resultado = mysql_store_result(cn.getConectar());
-				  while (fila = mysql_fetch_row(resultado)) {
-					  cout << "Fecha de ingreso: " << fila[0] << endl;
-				  }
-			  }
-			  else {
-				  cout << "Error en la consulta o no : " << endl;
-			  }
-
-
 
 			  // mostrar nit 
 
-			  consulta = "SELECT proveedores.nit\
-						from proveedores\
-				        INNER JOIN compras\
-						ON compras.idProveedor = proveedores.idProveedor\
-				        WHERE compras.idCompra = '" + idCompra + "'; ";
+			  consulta = "SELECT proveedores.nit from proveedores where proveedores.nit = '" + idCompra + "';";
 			  c = consulta.c_str();
 			  q_estado = mysql_query(cn.getConectar(), c);
 			  if (!q_estado) {
@@ -307,7 +368,7 @@ public: Compra_detalle() {}
 			  else {
 				  cout << "Error en la consulta: " << endl;
 			  }
-			
+
 			  cout << "*************************************************************************" << endl;
 			  cout << '\n';
 			  cout << "|   producto Adquirido   | Cantidad | Precio costo unitario | Total | " << endl;
@@ -315,16 +376,18 @@ public: Compra_detalle() {}
 			  //mostrar adquisicion
 
 			  consulta = "SELECT productos.producto, compras_detalle.canitdad, compras_detalle.precio_costo_unitario, canitdad * precio_costo_unitario AS total\
-						from compras_detalle\
-                        INNER JOIN productos\
-                        ON compras_detalle.idProducto = productos.idProducto\
-                        WHERE compras_detalle.idCompra = '" + idCompra + "' and productos.existencia>0; "; 
+						from compras \
+						inner join proveedores on compras.idProveedor = proveedores.idProveedor\
+						inner join compras_detalle on compras.no_orden_compra = compras_detalle.no_orden_compra\
+						inner join productos on compras_detalle.idProducto = compras_detalle.idproducto \
+						where compras_detalle.idCompra =(select compras.idCompra from compras inner join proveedores on compras.idProveedor = proveedores.idProveedor where proveedores = '" + idCompra + "' order by compras.no_orden_compra desc limit 1);";
+
 			  c = consulta.c_str();
 			  q_estado = mysql_query(cn.getConectar(), c);
 			  if (!q_estado) {
 				  resultado = mysql_store_result(cn.getConectar());
 				  while (fila = mysql_fetch_row(resultado)) {
-					  cout << "      " << fila[0] << "               - " << fila [1] << "         - " << fila[2] << "              - " << fila[3] << endl;
+					  cout << "      " << fila[0] << "               - " << fila[1] << "         - " << fila[2] << "              - " << fila[3] << endl;
 				  }
 			  }
 			  else {
@@ -337,7 +400,7 @@ public: Compra_detalle() {}
 						from compras_detalle\
 						INNER JOIN productos\
 						ON compras_detalle.idProducto = productos.idProducto\
-						WHERE compras_detalle.idCompra = '" + idCompra + "' and compras_detalle.idProducto > 0; ";
+						WHERE compras_detalle.idCompra = (select compras.idCompra from compras inner join proveedores on compras.idProveedor = proveedores.idProveedor where proveedores.nit = '" + idCompra + "' order by compras.no_orden_compra desc limit 1);";
 			  c = consulta.c_str();
 			  q_estado = mysql_query(cn.getConectar(), c);
 			  if (!q_estado) {
@@ -437,13 +500,16 @@ public: Compra_detalle() {}
 		  cn.abrir_conexion();
 		  if (cn.getConectar()) {
 
-			  freopen("texto.txt", "w", stdout);
-
 			  system("cls");
 			  cout << "***************************COMPROBANTE GENERADO**************************" << endl;
 			  cout << "*************************************************************************" << endl;
 			  cout << "*************************************************************************" << endl;
-			  string consulta = "SELECT compras.no_orden_compra from compras where idCompra = '" + idCompra + "'; ";
+
+			  string consulta = "SELECT compras.no_orden_compra from compras\
+								inner join proveedores on compras.idProveedor = proveedores.idProveedor\
+								where proveedores.nit = '" + idCompra + "'\
+								order by compras.no_orden_compra desc limit 1;";
+
 			  const char* c = consulta.c_str();
 			  q_estado = mysql_query(cn.getConectar(), c);
 			  if (!q_estado) {
@@ -456,13 +522,49 @@ public: Compra_detalle() {}
 				  cout << "Error en la consulta: " << endl;
 			  }
 
-			  // mostrar proveedor
-			  consulta = "SELECT proveedores.proveedor, proveedores.telefono\
-				        FROM proveedores\
-                        INNER JOIN compras\
-						ON compras.idProveedor = proveedores.idProveedor\
-				        WHERE compras.idCompra = '" + idCompra + "'; ";
 
+
+			  // feche de la orden 
+
+			  consulta = "SELECT compras.fecha_orden from compras\
+						inner join proveedores on compras.idProveedor = proveedores.idProveedor\
+						where proveedores.nit = '" + idCompra + "'\
+						order by compras.no_orden_compra desc limit 1;";
+
+
+			  c = consulta.c_str();
+			  q_estado = mysql_query(cn.getConectar(), c);
+			  if (!q_estado) {
+				  resultado = mysql_store_result(cn.getConectar());
+				  while (fila = mysql_fetch_row(resultado)) {
+					  cout << "Fecha de la orden: " << fila[0] << endl;
+				  }
+			  }
+			  else {
+				  cout << "Error en la consulta: " << endl;
+			  }
+
+			  // mostrar fecha de ingreso 
+
+			  consulta = "SELECT compras.fechaingreso from compras\
+						inner join proveedores on compras.idProveedor = proveedores.idProveedor\
+						where proveedores.nit = '" + idCompra + "'\
+						order by compras.no_orden_compra desc limit 1; ";
+			  c = consulta.c_str();
+			  q_estado = mysql_query(cn.getConectar(), c);
+			  if (!q_estado) {
+				  resultado = mysql_store_result(cn.getConectar());
+				  while (fila = mysql_fetch_row(resultado)) {
+					  cout << "Fecha de ingreso estipulado: " << fila[0] << endl;
+				  }
+			  }
+			  else {
+				  cout << "Error en la consulta: " << endl;
+			  }
+
+
+			  // mostrar proveedor
+			  consulta = "SELECT proveedor, telefono from proveedores where nit = '" + idCompra + "';";
 			  c = consulta.c_str();
 			  q_estado = mysql_query(cn.getConectar(), c);
 			  if (!q_estado) {
@@ -475,45 +577,10 @@ public: Compra_detalle() {}
 				  cout << "Error en la consulta: " << endl;
 			  }
 
-			  // mostrar fecha 
-
-			  consulta = "SELECT compras.fecha_orden from compras where idCompra = '" + idCompra + "'; ";
-			  c = consulta.c_str();
-			  q_estado = mysql_query(cn.getConectar(), c);
-			  if (!q_estado) {
-				  resultado = mysql_store_result(cn.getConectar());
-				  while (fila = mysql_fetch_row(resultado)) {
-					  cout << "Fecha de orden de compra: " << fila[0] << endl;
-				  }
-			  }
-			  else {
-				  cout << "Error en la consulta: " << endl;
-			  }
-
-			  // fecha del ingrreso 
-
-			  consulta = "SELECT compras.fechaingreso from compras where idCompra = '" + idCompra + "'; ";
-			  c = consulta.c_str();
-			  q_estado = mysql_query(cn.getConectar(), c);
-			  if (!q_estado) {
-				  resultado = mysql_store_result(cn.getConectar());
-				  while (fila = mysql_fetch_row(resultado)) {
-					  cout << "Fecha de ingreso: " << fila[0] << endl;
-				  }
-			  }
-			  else {
-				  cout << "Error en la consulta o no : " << endl;
-			  }
-
-
 
 			  // mostrar nit 
 
-			  consulta = "SELECT proveedores.nit\
-						from proveedores\
-				        INNER JOIN compras\
-						ON compras.idProveedor = proveedores.idProveedor\
-				        WHERE compras.idCompra = '" + idCompra + "'; ";
+			  consulta = "SELECT proveedores.nit from proveedores where proveedores.nit = '" + idCompra + "';";
 			  c = consulta.c_str();
 			  q_estado = mysql_query(cn.getConectar(), c);
 			  if (!q_estado) {
@@ -533,10 +600,12 @@ public: Compra_detalle() {}
 			  //mostrar adquisicion
 
 			  consulta = "SELECT productos.producto, compras_detalle.canitdad, compras_detalle.precio_costo_unitario, canitdad * precio_costo_unitario AS total\
-						from compras_detalle\
-                        INNER JOIN productos\
-                        ON compras_detalle.idProducto = productos.idProducto\
-                        WHERE compras_detalle.idCompra = '" + idCompra + "' and productos.existencia>0; ";
+						from compras \
+						inner join proveedores on compras.idProveedor = proveedores.idProveedor\
+						inner join compras_detalle on compras.no_orden_compra = compras_detalle.no_orden_compra\
+						inner join productos on compras_detalle.idProducto = compras_detalle.idproducto \
+						where compras_detalle.idCompra =(select compras.idCompra from compras inner join proveedores on compras.idProveedor = proveedores.idProveedor where proveedores = '" + idCompra + "' order by compras.no_orden_compra desc limit 1);";
+
 			  c = consulta.c_str();
 			  q_estado = mysql_query(cn.getConectar(), c);
 			  if (!q_estado) {
@@ -555,7 +624,7 @@ public: Compra_detalle() {}
 						from compras_detalle\
 						INNER JOIN productos\
 						ON compras_detalle.idProducto = productos.idProducto\
-						WHERE compras_detalle.idCompra = '" + idCompra + "' and compras_detalle.idProducto > 0; ";
+						WHERE compras_detalle.idCompra = (select compras.idCompra from compras inner join proveedores on compras.idProveedor = proveedores.idProveedor where proveedores.nit = '" + idCompra + "' order by compras.no_orden_compra desc limit 1);";
 			  c = consulta.c_str();
 			  q_estado = mysql_query(cn.getConectar(), c);
 			  if (!q_estado) {
@@ -572,6 +641,5 @@ public: Compra_detalle() {}
 
 		  }
 	  }
-
 
 };
