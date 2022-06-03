@@ -448,17 +448,19 @@ void empleados_crear() {
     getline(cin, tel);
     cout << "ingrese DPI: ";
     getline(cin, dpi);
-    cout << "ingrese genero: ";
+    cout << "ingrese genero (M/F): ";
     getline(cin, gen);
     Genero d = Genero(gen);
     d.confgen();
-
-
-
+    cout << "ingrese fecha nacimiento (aaaa/mm/dd): ";
+    getline(cin, fn);
+    cout << "ingrese idpuesto: ";
+    getline(cin, idpuesto);
 
 
     Empleados a = Empleados(nom, ape, nt, gen, dir, tel, ce, dpi, ge, fn, idpuesto, fi, fin, v);
     a.crear();
+	system ("cls");
 }
 
 
@@ -491,11 +493,11 @@ void empleados_actualizar() {
     getline(cin, tel);
     cout << "ingrese DPI: ";
     getline(cin, dpi);
-    cout << "ingrese genero: ";
+    cout << "ingrese genero hombre = m y mujer = f: ";
     getline(cin, gen);
     Genero d = Genero(gen);
     d.confgen();
-    cout << "ingrese fecha nacimiento: ";
+    cout << "ingrese fecha nacimiento aaaa/mm/dd : ";
     getline(cin, fn);
     cout << "ingrese idpuesto: ";
     getline(cin, idpuesto);

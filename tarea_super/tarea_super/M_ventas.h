@@ -231,7 +231,7 @@ void crearfactura() {
             cout << "+--------------------------------+" << endl;
             cout << "-->"; cin >> fax;
         } while (fax == 's');
-        freopen("CON", "w", stdout);
+      /*  freopen("CON", "w", stdout); */
         cout << "+---------------------------+" << endl;
         cout << "realizar otra venta? (s/n)" << endl;
         cout << "+---------------------------+" << endl;
